@@ -25,12 +25,11 @@ interface PortfolioWorkflowProps {
 const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflowProps) => {
   const initialNodes: Node[] = useMemo(() => [
     {
-      id: 'start',
+      id: '__start__',
       type: 'workflow',
       position: { x: 250, y: 50 },
       data: {
         label: 'Start',
-        icon: '🚀',
         description: 'AI Engineer Portfolio',
         isActive: activeSection === 'start'
       }
@@ -66,17 +65,6 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
         icon: '💼',
         description: 'Professional Journey',
         isActive: activeSection === 'experience'
-      }
-    },
-    {
-      id: 'skills',
-      type: 'workflow',
-      position: { x: 150, y: 310 },
-      data: {
-        label: 'Technical Skills',
-        icon: '⚡',
-        description: 'LLMs & Frameworks',
-        isActive: activeSection === 'skills'
       }
     },
     {
