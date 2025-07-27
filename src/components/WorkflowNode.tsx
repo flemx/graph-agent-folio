@@ -12,38 +12,97 @@ interface WorkflowNodeProps {
   selected?: boolean;
 }
 
+const getNodeColors = (nodeId: string, isActive: boolean) => {
+  const colors = {
+    start: { 
+      text: 'rgb(192, 192, 192)', 
+      bg: 'rgba(200, 200, 200, 0.1)', 
+      border: 'rgb(160, 160, 160)' 
+    },
+    about: { 
+      text: 'rgb(147, 197, 253)', 
+      bg: 'rgba(147, 197, 253, 0.1)', 
+      border: 'rgb(59, 130, 246)' 
+    },
+    projects: { 
+      text: 'rgb(134, 239, 172)', 
+      bg: 'rgba(134, 239, 172, 0.1)', 
+      border: 'rgb(34, 197, 94)' 
+    },
+    experience: { 
+      text: 'rgb(236, 224, 172)', 
+      bg: 'rgba(243, 236, 205, 0.1)', 
+      border: 'rgb(216, 192, 90)' 
+    },
+    skills: { 
+      text: 'rgb(251, 146, 60)', 
+      bg: 'rgba(251, 146, 60, 0.1)', 
+      border: 'rgb(234, 88, 12)' 
+    },
+    contact: { 
+      text: 'rgb(244, 114, 182)', 
+      bg: 'rgba(244, 114, 182, 0.1)', 
+      border: 'rgb(219, 39, 119)' 
+    }
+  };
+  
+  const nodeColors = colors[nodeId as keyof typeof colors] || colors.start;
+  
+  if (isActive) {
+    return {
+      ...nodeColors,
+      bg: nodeColors.bg.replace('0.1', '0.2'),
+      border: nodeColors.border
+    };
+  }
+  
+  return nodeColors;
+};
+
 const WorkflowNode = memo(({ data, selected }: WorkflowNodeProps) => {
+  const nodeColors = getNodeColors(data.label.toLowerCase().replace(/\s+/g, ''), data.isActive);
+  
   return (
-    <div className={cn(
-      "relative bg-node-bg border border-workflow-border rounded-lg p-4 min-w-[140px] shadow-node transition-all duration-200",
-      "hover:bg-node-hover hover:border-primary/50",
-      selected && "border-primary bg-node-hover ring-2 ring-primary/20",
-      data.isActive && "border-primary bg-gradient-accent"
-    )}>
+    <div className="relative">
       <Handle
         type="target"
         position={Position.Top}
-        className="!w-2 !h-2 !bg-connection-line !border-0 hover:!bg-primary"
+        className="!w-0 !h-0 !bg-transparent !border-0 hidden"
       />
       
-      <div className="flex flex-col items-center gap-2 text-center">
-        {data.icon && (
-          <div className="text-2xl">{data.icon}</div>
-        )}
-        <div className="text-sm font-medium text-node-text">
-          {data.label}
-        </div>
-        {data.description && (
-          <div className="text-xs text-muted-foreground opacity-80">
-            {data.description}
+      <div className="group flex flex-col place-items-center">
+        <div className="w-full text-center backdrop-blur-sm transition-all duration-300 ease-in-out">
+          <div 
+            className={cn(
+              "group relative rounded-md border p-2 font-medium transition-all duration-200",
+              "min-w-[140px] text-center",
+              selected && "ring-2 ring-primary/20"
+            )}
+            style={{
+              color: nodeColors.text,
+              backgroundColor: nodeColors.bg,
+              borderColor: nodeColors.border
+            }}
+          >
+            <div className="z-[2] flex items-center justify-center gap-1.5">
+              {data.icon && (
+                <span className="text-lg">{data.icon}</span>
+              )}
+              <span className="leading-none text-sm">{data.label}</span>
+            </div>
+            {data.description && (
+              <div className="text-xs mt-1 opacity-80">
+                {data.description}
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
 
       <Handle
         type="source"
         position={Position.Bottom}
-        className="!w-2 !h-2 !bg-connection-line !border-0 hover:!bg-primary"
+        className="!w-0 !h-0 !bg-transparent !border-0 hidden"
       />
     </div>
   );

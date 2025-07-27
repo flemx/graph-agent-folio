@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import PortfolioWorkflow from '@/components/PortfolioWorkflow';
+import Sidebar from '@/components/Sidebar';
+import TopBar from '@/components/TopBar';
 import StartSection from '@/components/sections/StartSection';
 import AboutSection from '@/components/sections/AboutSection';
 import ProjectsSection from '@/components/sections/ProjectsSection';
@@ -31,8 +33,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background flex">
+      {/* Sidebar */}
+      <Sidebar />
+      
+      {/* Top Bar */}
+      <TopBar />
+
       {/* Left Panel - Workflow Navigation */}
-      <div className="w-96 h-screen overflow-hidden">
+      <div className="w-96 h-screen overflow-hidden ml-11 mt-12">
         <PortfolioWorkflow 
           activeSection={activeSection}
           onSectionChange={setActiveSection}
@@ -40,7 +48,7 @@ const Index = () => {
       </div>
 
       {/* Right Panel - Content */}
-      <div className="flex-1 h-screen overflow-y-auto">
+      <div className="flex-1 h-screen overflow-y-auto mt-12">
         <div className="max-w-4xl mx-auto p-8">
           {renderContent()}
         </div>
