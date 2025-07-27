@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { BaseEdge, getSmoothStepPath, EdgeProps } from '@xyflow/react';
+import { BaseEdge, getSmoothStepPath, EdgeProps, MarkerType } from '@xyflow/react';
 
 const getSourceNodeColor = (sourceId: string) => {
   const colors = {
@@ -40,14 +40,14 @@ const CustomEdge = memo(({
         <marker
           id={`arrow-${source}`}
           viewBox="0 0 10 10"
-          refX="9"
-          refY="3"
-          markerWidth="6"
-          markerHeight="6"
+          refX="10"
+          refY="5"
+          markerWidth="8"
+          markerHeight="8"
           orient="auto"
           markerUnits="strokeWidth"
         >
-          <path d="M0,0 L0,6 L9,3 z" fill={sourceColor} />
+          <path d="M0,0 L0,10 L10,5 z" fill={sourceColor} stroke={sourceColor} />
         </marker>
       </defs>
       <BaseEdge
