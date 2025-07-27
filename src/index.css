@@ -81,6 +81,24 @@ All colors MUST be HSL.
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
   }
+
+  .light {
+    /* Light theme overrides */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    /* Workflow & node tokens */
+    --workflow-bg: 0 0% 98%;
+    --workflow-border: 0 0% 90%;
+
+    --node-bg: 0 0% 100%;
+    --node-hover: 0 0% 95%;
+    --node-active: 263 70% 50%;
+    --node-text: 240 10% 3.9%;
+
+    --connection-line: 240 6% 60%;
+    --connection-active: 263 70% 50%;
+  }
 }
 
 @layer base {

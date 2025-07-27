@@ -4,10 +4,14 @@ import {
   BellPlus, 
   Mail, 
   UserPlus, 
-  Moon 
+  Moon,
+  Sun 
 } from 'lucide-react';
+import { useTheme } from '@/hooks/useTheme';
 
 const Sidebar = () => {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <header className="fixed bottom-0 left-0 top-0 flex flex-col items-stretch gap-3 overflow-hidden border-r border-r-secondary pb-3 pt-3 transition-all duration-200 ease-in-out w-11">
       <div className="flex min-h-[28px] flex-row items-center transition-all duration-200 ease-in-out justify-center">
@@ -67,10 +71,15 @@ const Sidebar = () => {
           
           <button 
             type="button"
+            onClick={toggleTheme}
             className="flex w-full select-none items-center outline-none flex-col justify-center gap-0"
           >
             <div className="flex items-center gap-1.5 text-primary transition-colors hover:bg-secondary cursor-pointer rounded-md p-2">
-              <Moon className="h-4 w-4" />
+              {theme === 'dark' ? (
+                <Moon className="h-4 w-4" />
+              ) : (
+                <Sun className="h-4 w-4" />
+              )}
             </div>
           </button>
         </div>
