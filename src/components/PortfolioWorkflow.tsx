@@ -73,6 +73,15 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
         description: 'Let\'s Connect',
         isActive: activeSection === 'contact'
       }
+    },
+    {
+      id: 'end',
+      type: 'workflow',
+      position: { x: 250, y: 450 },
+      data: {
+        label: '__end__',
+        description: 'End workflow'
+      }
     }
   ], [activeSection]);
 
@@ -105,6 +114,15 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
       id: 'experience-contact',
       source: 'experience',
       target: 'contact',
+      type: 'smoothstep',
+      style: { stroke: '#10b981', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
+    }
+    ,
+    {
+      id: 'contact-end',
+      source: 'contact',
+      target: 'end',
       type: 'smoothstep',
       style: { stroke: '#10b981', strokeWidth: 2 },
       markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
