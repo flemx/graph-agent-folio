@@ -67,42 +67,26 @@ const WorkflowNode = memo(({ data, selected }: WorkflowNodeProps) => {
       <Handle
         type="target"
         position={Position.Top}
-        className="!w-0 !h-0 !bg-transparent !border-0 hidden"
+        className="!w-2 !h-2 !bg-transparent !border-0"
       />
       
-      <div className="group flex flex-col place-items-center">
-        <div className="w-full text-center backdrop-blur-sm transition-all duration-300 ease-in-out">
-          <div 
-            className={cn(
-              "group relative rounded-md border p-2 font-medium transition-all duration-200",
-              "min-w-[140px] text-center",
-              selected && "ring-2 ring-primary/20"
-            )}
-            style={{
-              color: nodeColors.text,
-              backgroundColor: nodeColors.bg,
-              borderColor: nodeColors.border
-            }}
-          >
-            <div className="z-[2] flex items-center justify-center gap-1.5">
-              {data.icon && (
-                <span className="text-lg">{data.icon}</span>
-              )}
-              <span className="leading-none text-sm">{data.label}</span>
-            </div>
-            {data.description && (
-              <div className="text-xs mt-1 opacity-80">
-                {data.description}
-              </div>
-            )}
-          </div>
-        </div>
+      <div 
+        className={cn(
+          "px-6 py-3 rounded-full border-2 bg-gray-800 text-white font-medium min-w-[160px] text-center transition-all duration-200",
+          selected && "ring-2 ring-primary/20"
+        )}
+        style={{
+          borderColor: nodeColors.border,
+          color: '#ffffff'
+        }}
+      >
+        <span className="text-sm">{data.label}</span>
       </div>
 
       <Handle
         type="source"
         position={Position.Bottom}
-        className="!w-0 !h-0 !bg-transparent !border-0 hidden"
+        className="!w-2 !h-2 !bg-transparent !border-0"
       />
     </div>
   );

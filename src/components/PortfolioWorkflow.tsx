@@ -98,40 +98,40 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
       source: 'start',
       target: 'about',
       type: 'smoothstep',
-      style: { stroke: 'hsl(var(--connection-line))' },
-      markerEnd: { type: MarkerType.ArrowClosed, color: 'hsl(var(--connection-line))' }
+      style: { stroke: '#10b981', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
     },
     {
-      id: 'start-projects',
-      source: 'start',
+      id: 'about-projects',
+      source: 'about',
       target: 'projects',
       type: 'smoothstep',
-      style: { stroke: 'hsl(var(--connection-line))' },
-      markerEnd: { type: MarkerType.ArrowClosed, color: 'hsl(var(--connection-line))' }
+      style: { stroke: '#10b981', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
     },
     {
-      id: 'start-experience',
-      source: 'start',
+      id: 'projects-experience',
+      source: 'projects',
       target: 'experience',
       type: 'smoothstep',
-      style: { stroke: 'hsl(var(--connection-line))' },
-      markerEnd: { type: MarkerType.ArrowClosed, color: 'hsl(var(--connection-line))' }
+      style: { stroke: '#10b981', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
     },
     {
-      id: 'projects-skills',
-      source: 'projects',
+      id: 'experience-skills',
+      source: 'experience',
       target: 'skills',
       type: 'smoothstep',
-      style: { stroke: 'hsl(var(--connection-line))' },
-      markerEnd: { type: MarkerType.ArrowClosed, color: 'hsl(var(--connection-line))' }
+      style: { stroke: '#10b981', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
     },
     {
-      id: 'experience-contact',
-      source: 'experience',
+      id: 'skills-contact',
+      source: 'skills',
       target: 'contact',
       type: 'smoothstep',
-      style: { stroke: 'hsl(var(--connection-line))' },
-      markerEnd: { type: MarkerType.ArrowClosed, color: 'hsl(var(--connection-line))' }
+      style: { stroke: '#10b981', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
     }
   ], []);
 
