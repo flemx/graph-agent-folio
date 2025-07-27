@@ -13,7 +13,7 @@ const Sidebar = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="fixed bottom-0 left-0 top-0 flex flex-col items-stretch gap-3 overflow-hidden border-r border-r-secondary pb-3 pt-3 transition-all duration-200 ease-in-out w-11">
+    <header className="fixed bottom-0 left-0 top-0 hidden md:flex flex-col items-stretch gap-3 overflow-hidden border-r border-r-secondary pb-3 pt-3 transition-all duration-200 ease-in-out w-11">
       <div className="flex min-h-[28px] flex-row items-center transition-all duration-200 ease-in-out justify-center">
         <button 
           type="button" 
