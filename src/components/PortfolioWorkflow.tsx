@@ -136,11 +136,11 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
         proOptions={{ hideAttribution: true }}
         className="workflow-canvas"
       >
-        <Background 
+        {/* <Background 
           color="hsl(var(--workflow-border))"
           size={1}
           className="opacity-30"
-        />
+        /> */}
       </ReactFlow>
     </div>
   );
