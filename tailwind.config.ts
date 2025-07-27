@@ -52,16 +52,30 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				workflow: {
+					bg: 'hsl(var(--workflow-bg))',
+					border: 'hsl(var(--workflow-border))'
+				},
+				node: {
+					bg: 'hsl(var(--node-bg))',
+					hover: 'hsl(var(--node-hover))',
+					active: 'hsl(var(--node-active))',
+					text: 'hsl(var(--node-text))'
+				},
+				connection: {
+					line: 'hsl(var(--connection-line))',
+					active: 'hsl(var(--connection-active))'
 				}
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-secondary': 'var(--gradient-secondary)',
+				'gradient-accent': 'var(--gradient-accent)'
+			},
+			boxShadow: {
+				'workflow': 'var(--shadow-workflow)',
+				'node': 'var(--shadow-node)',
+				'content': 'var(--shadow-content)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
