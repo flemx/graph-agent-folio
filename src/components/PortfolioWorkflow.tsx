@@ -91,41 +91,40 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
       source: 'start',
       target: 'about',
       type: 'smoothstep',
-      style: { stroke: '#10b981', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
+      style: { stroke: 'rgb(45, 190, 172)', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(45, 190, 172)' }
     },
     {
       id: 'about-projects',
       source: 'about',
       target: 'projects',
       type: 'smoothstep',
-      style: { stroke: '#10b981', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
+      style: { stroke: 'rgb(59, 130, 246)', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(59, 130, 246)' }
     },
     {
       id: 'projects-experience',
       source: 'projects',
       target: 'experience',
       type: 'smoothstep',
-      style: { stroke: '#10b981', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
+      style: { stroke: 'rgb(34, 197, 94)', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(34, 197, 94)' }
     },
     {
       id: 'experience-contact',
       source: 'experience',
       target: 'contact',
       type: 'smoothstep',
-      style: { stroke: '#10b981', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
-    }
-    ,
+      style: { stroke: 'rgb(216, 192, 90)', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(216, 192, 90)' }
+    },
     {
       id: 'contact-end',
       source: 'contact',
       target: 'end',
       type: 'smoothstep',
-      style: { stroke: '#10b981', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
+      style: { stroke: 'rgb(219, 39, 119)', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(219, 39, 119)' }
     }
   ], []);
 
@@ -152,7 +151,7 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
         fitView
-        fitViewOptions={{ padding: 0.2 }}
+        fitViewOptions={{ padding: 0.3, maxZoom: 0.8 }}
         proOptions={{ hideAttribution: true }}
         className="workflow-canvas"
       >
