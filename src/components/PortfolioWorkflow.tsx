@@ -25,11 +25,11 @@ interface PortfolioWorkflowProps {
 const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflowProps) => {
   const initialNodes: Node[] = useMemo(() => [
     {
-      id: '__start__',
+      id: 'start',
       type: 'workflow',
       position: { x: 250, y: 50 },
       data: {
-        label: 'Start',
+        label: '__start__',
         description: 'AI Engineer Portfolio',
         isActive: activeSection === 'start'
       }
@@ -37,10 +37,9 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
     {
       id: 'about',
       type: 'workflow', 
-      position: { x: 100, y: 180 },
+      position: { x: 250, y: 150 },
       data: {
         label: 'About',
-        icon: '👤',
         description: 'Background & Vision',
         isActive: activeSection === 'about'
       }
@@ -48,10 +47,9 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
     {
       id: 'projects',
       type: 'workflow',
-      position: { x: 250, y: 180 },
+      position: { x: 250, y: 250 },
       data: {
         label: 'AI Projects',
-        icon: '🤖',
         description: 'Agent Systems',
         isActive: activeSection === 'projects'
       }
@@ -59,10 +57,9 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
     {
       id: 'experience',
       type: 'workflow',
-      position: { x: 400, y: 180 },
+      position: { x: 250, y: 350 },
       data: {
         label: 'Experience',
-        icon: '💼',
         description: 'Professional Journey',
         isActive: activeSection === 'experience'
       }
@@ -70,10 +67,9 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
     {
       id: 'contact',
       type: 'workflow',
-      position: { x: 350, y: 310 },
+      position: { x: 250, y: 450 },
       data: {
         label: 'Contact',
-        icon: '📧',
         description: 'Let\'s Connect',
         isActive: activeSection === 'contact'
       }
@@ -106,16 +102,8 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
       markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
     },
     {
-      id: 'experience-skills',
+      id: 'experience-contact',
       source: 'experience',
-      target: 'skills',
-      type: 'smoothstep',
-      style: { stroke: '#10b981', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: '#10b981' }
-    },
-    {
-      id: 'skills-contact',
-      source: 'skills',
       target: 'contact',
       type: 'smoothstep',
       style: { stroke: '#10b981', strokeWidth: 2 },
