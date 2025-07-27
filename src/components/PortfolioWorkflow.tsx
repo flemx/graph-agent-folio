@@ -12,9 +12,14 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import WorkflowNode from './WorkflowNode';
+import CustomEdge from './CustomEdge';
 
 const nodeTypes = {
   workflow: WorkflowNode,
+};
+
+const edgeTypes = {
+  custom: CustomEdge,
 };
 
 interface PortfolioWorkflowProps {
@@ -80,33 +85,25 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
       id: 'start-about',
       source: 'start',
       target: 'about',
-      type: 'smoothstep',
-      style: { stroke: 'rgb(153, 153, 153)', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(153, 153, 153)' }
+      type: 'custom'
     },
     {
       id: 'about-projects',
       source: 'about',
       target: 'projects',
-      type: 'smoothstep',
-      style: { stroke: 'rgb(45, 190, 172)', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(45, 190, 172)' }
+      type: 'custom'
     },
     {
       id: 'projects-experience',
       source: 'projects',
       target: 'experience',
-      type: 'smoothstep',
-      style: { stroke: 'rgb(216, 192, 90)', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(216, 192, 90)' }
+      type: 'custom'
     },
     {
       id: 'experience-end',
       source: 'experience',
       target: 'end',
-      type: 'smoothstep',
-      style: { stroke: 'rgb(221, 85, 108)', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(221, 85, 108)' }
+      type: 'custom'
     }
   ], []);
 
@@ -132,6 +129,7 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
         onConnect={onConnect}
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         fitView
         fitViewOptions={{ padding: 0.3, maxZoom: 0.8 }}
         proOptions={{ hideAttribution: true }}
