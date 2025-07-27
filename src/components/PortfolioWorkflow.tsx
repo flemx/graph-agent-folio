@@ -110,6 +110,7 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
+
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
@@ -131,7 +132,7 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView
-        fitViewOptions={{ padding: 0.3, maxZoom: 0.8 }}
+        fitViewOptions={{ padding: 0.7 }}
         proOptions={{ hideAttribution: true }}
         className="workflow-canvas"
       >
