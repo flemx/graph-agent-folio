@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { BaseEdge, getSmoothStepPath, EdgeProps, MarkerType } from '@xyflow/react';
+import { BaseEdge, getBezierPath, EdgeProps } from '@xyflow/react';
 
 const getSourceNodeColor = (sourceId: string) => {
   const colors = {
@@ -24,14 +24,15 @@ const CustomEdge = memo(({
 }: EdgeProps) => {
   const sourceColor = getSourceNodeColor(source);
   
-  const [edgePath] = getSmoothStepPath({
+  // Create a gentle S-curve regardless of node alignment
+  const [edgePath] = getBezierPath({
     sourceX,
     sourceY,
     sourcePosition,
     targetX,
     targetY,
     targetPosition,
-    borderRadius: 10,
+    curvature: 0.55, // tweak 0-1 for more/less bend
   });
 
   return (
@@ -40,7 +41,8 @@ const CustomEdge = memo(({
         <marker
           id={`arrow-${source}`}
           viewBox="0 0 10 10"
-          refX="10"
+          // reduce refX so the arrow head sits closer to the node border
+          refX="8"
           refY="5"
           markerWidth="8"
           markerHeight="8"
@@ -55,7 +57,7 @@ const CustomEdge = memo(({
         path={edgePath}
         style={{
           stroke: sourceColor,
-          strokeWidth: 2,
+          strokeWidth: 1.5,
         }}
         markerEnd={`url(#arrow-${source})`}
       />

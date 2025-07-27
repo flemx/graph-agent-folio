@@ -74,12 +74,12 @@ const WorkflowNode = memo(({ data, selected }: WorkflowNodeProps) => {
       <Handle
         type="target"
         position={Position.Top}
-        className="!w-2 !h-2 !bg-transparent !border-0 !-top-1"
+        className="!w-2 !h-2 !bg-transparent !border-0 !top-0"
       />
       
       <div 
         className={cn(
-          "px-6 py-3 border-2 font-medium min-w-[160px] text-center transition-all duration-200",
+          "px-3 py-1.5 border-2 font-medium min-w-[160px] text-center transition-all duration-200",
           isStartOrEnd ? "rounded-full" : "rounded-md",
           selected && "ring-2 ring-primary/20"
         )}
@@ -95,7 +95,7 @@ const WorkflowNode = memo(({ data, selected }: WorkflowNodeProps) => {
       <Handle
         type="source"
         position={Position.Bottom}
-        className="!w-2 !h-2 !bg-transparent !border-0 !-bottom-1"
+        className="!w-1.5 !h-1.5 !bg-transparent !border-0 !bottom-1"
       />
     </div>
   );
