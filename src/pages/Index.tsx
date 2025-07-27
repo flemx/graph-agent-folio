@@ -37,10 +37,13 @@ const Index = () => {
       <Sidebar />
       
       {/* Top Bar */}
-      <TopBar />
+      <TopBar 
+        activeSection={activeSection}
+        onSectionChange={setActiveSection}
+      />
 
-      {/* Left Panel - Workflow Navigation */}
-      <div className="w-96 h-screen overflow-hidden ml-11 mt-12">
+      {/* Left Panel - Workflow Navigation (desktop only) */}
+      <div className="hidden md:block w-96 h-screen overflow-hidden md:ml-11 mt-12">
         <PortfolioWorkflow 
           activeSection={activeSection}
           onSectionChange={setActiveSection}

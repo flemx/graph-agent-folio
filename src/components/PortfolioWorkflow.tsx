@@ -6,13 +6,18 @@ import {
   addEdge,
   Node,
   Edge,
-  Connection,
-  MarkerType,
-  Background,
+  Connection
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import WorkflowNode from './WorkflowNode';
 import CustomEdge from './CustomEdge';
+
+// Define the shape of the `data` object we store inside each workflow node.
+type WorkflowData = {
+  label: string;
+  description?: string;
+  isActive?: boolean;
+};
 
 const nodeTypes = {
   workflow: WorkflowNode,
@@ -28,7 +33,7 @@ interface PortfolioWorkflowProps {
 }
 
 const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflowProps) => {
-  const initialNodes: Node[] = useMemo(() => [
+  const initialNodes: Node<WorkflowData>[] = useMemo(() => [
     {
       id: 'start',
       type: 'workflow',
@@ -121,7 +126,7 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
   }, [onSectionChange]);
 
   return (
-    <div className="h-full bg-workflow-bg border-r border-workflow-border">
+    <div className="h-full bg-workflow-bg border-r border-workflow-border overflow-hidden">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -135,13 +140,7 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
         fitViewOptions={{ padding: 0.7 }}
         proOptions={{ hideAttribution: true }}
         className="workflow-canvas"
-      >
-        {/* <Background 
-          color="hsl(var(--workflow-border))"
-          size={1}
-          className="opacity-30"
-        /> */}
-      </ReactFlow>
+      />
     </div>
   );
 };
