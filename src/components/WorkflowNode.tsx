@@ -15,24 +15,24 @@ interface WorkflowNodeProps {
 const getNodeColors = (nodeId: string, isActive: boolean) => {
   const colors = {
     start: { 
+      text: 'rgb(255, 255, 255)', 
+      bg: 'rgba(255, 255, 255, 0.1)', 
+      border: 'rgb(153, 153, 153)' 
+    },
+    about: { 
       text: 'rgb(172, 236, 228)', 
       bg: 'rgba(45, 190, 172, 0.1)', 
       border: 'rgb(45, 190, 172)' 
     },
-    about: { 
-      text: 'rgb(147, 197, 253)', 
-      bg: 'rgba(59, 130, 246, 0.1)', 
-      border: 'rgb(59, 130, 246)' 
-    },
     projects: { 
-      text: 'rgb(134, 239, 172)', 
-      bg: 'rgba(34, 197, 94, 0.1)', 
-      border: 'rgb(34, 197, 94)' 
+      text: 'rgb(236, 224, 172)', 
+      bg: 'rgba(243, 236, 205, 0.1)', 
+      border: 'rgb(216, 192, 90)' 
     },
     experience: { 
-      text: 'rgb(236, 224, 172)', 
-      bg: 'rgba(216, 192, 90, 0.1)', 
-      border: 'rgb(216, 192, 90)' 
+      text: 'rgb(238, 170, 181)', 
+      bg: 'rgba(236, 161, 174, 0.1)', 
+      border: 'rgb(221, 85, 108)' 
     },
     skills: { 
       text: 'rgb(251, 146, 60)', 
@@ -45,9 +45,9 @@ const getNodeColors = (nodeId: string, isActive: boolean) => {
       border: 'rgb(219, 39, 119)' 
     },
     end: { 
-      text: 'rgb(172, 236, 228)', 
-      bg: 'rgba(45, 190, 172, 0.1)', 
-      border: 'rgb(45, 190, 172)' 
+      text: 'rgb(255, 255, 255)', 
+      bg: 'rgba(255, 255, 255, 0.1)', 
+      border: 'rgb(153, 153, 153)' 
     }
   };
   

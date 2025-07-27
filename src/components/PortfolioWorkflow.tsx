@@ -81,32 +81,32 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
       source: 'start',
       target: 'about',
       type: 'smoothstep',
-      style: { stroke: 'rgb(45, 190, 172)', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(45, 190, 172)' }
+      style: { stroke: 'rgb(153, 153, 153)', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(153, 153, 153)' }
     },
     {
       id: 'about-projects',
       source: 'about',
       target: 'projects',
       type: 'smoothstep',
-      style: { stroke: 'rgb(59, 130, 246)', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(59, 130, 246)' }
+      style: { stroke: 'rgb(45, 190, 172)', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(45, 190, 172)' }
     },
     {
       id: 'projects-experience',
       source: 'projects',
       target: 'experience',
       type: 'smoothstep',
-      style: { stroke: 'rgb(34, 197, 94)', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(34, 197, 94)' }
+      style: { stroke: 'rgb(216, 192, 90)', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(216, 192, 90)' }
     },
     {
       id: 'experience-end',
       source: 'experience',
       target: 'end',
       type: 'smoothstep',
-      style: { stroke: 'rgb(216, 192, 90)', strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(216, 192, 90)' }
+      style: { stroke: 'rgb(221, 85, 108)', strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: 'rgb(221, 85, 108)' }
     }
   ], []);
 
