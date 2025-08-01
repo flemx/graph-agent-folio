@@ -64,21 +64,17 @@ const WorkflowNode = memo(({ data, selected }: WorkflowNodeProps) => {
       
       <div 
         className={cn(
-          "px-3 py-1.5 border-2 font-medium min-w-[160px] text-center transition-all duration-200 transform",
+          "px-3 py-1.5 border-2 font-medium min-w-[160px] text-center transition-transform duration-200",
           isStartOrEnd ? "rounded-full" : "rounded-md",
-          selected && "ring-2 ring-primary/20"
+          selected && "ring-2 ring-primary/20",
+          !isStartOrEnd && data.isActive && "scale-105",
+          !isStartOrEnd && !data.isActive && "hover:scale-105",
         )}
         style={{
           borderColor: nodeColors.border,
           backgroundColor: nodeColors.bg,
           color: nodeColors.text,
           opacity: data.dimmed ? 0.4 : 1,
-          transform:
-            isStartOrEnd
-              ? 'scale(1)'
-              : data.isActive
-              ? 'scale(1.05)'
-              : 'scale(1)',
         }}
       >
         <span className="text-sm">{data.label}</span>
