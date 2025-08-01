@@ -64,7 +64,7 @@ const WorkflowNode = memo(({ data, selected }: WorkflowNodeProps) => {
       
       <div 
         className={cn(
-          "px-3 py-1.5 border-2 font-medium min-w-[160px] text-center transition-transform duration-200",
+          "px-3 py-1.5 border-2 font-medium min-w-[160px] text-center",
           isStartOrEnd ? "rounded-full" : "rounded-md",
           selected && "ring-2 ring-primary/20",
           !isStartOrEnd && data.isActive && "scale-105",
@@ -75,6 +75,7 @@ const WorkflowNode = memo(({ data, selected }: WorkflowNodeProps) => {
           backgroundColor: nodeColors.bg,
           color: nodeColors.text,
           opacity: data.dimmed ? 0.4 : 1,
+          transition: 'transform 250ms ease, opacity 250ms ease 50ms',
         }}
       >
         <span className="text-sm">{data.label}</span>
