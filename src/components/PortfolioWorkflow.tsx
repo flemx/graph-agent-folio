@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import {
   ReactFlow,
   useNodesState,
@@ -112,9 +112,43 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
     }
   ], []);
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const isTerminal = (id: string) => id === 'start' || id === 'end';
 
+  const computedEdges: Edge[] = useMemo(() =>
+    initialEdges.map((edge) => ({
+      ...edge,
+      data: {
+        dimmed:
+          !isTerminal(activeSection) &&
+          !isTerminal(edge.source) &&
+          !isTerminal(edge.target) &&
+          activeSection !== edge.source &&
+          activeSection !== edge.target,
+      },
+    })),
+  [initialEdges, activeSection]);
+
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(computedEdges);
+
+  // Update edges dimming when activeSection changes
+  useEffect(() => {
+    setEdges(computedEdges);
+    // update nodes active status
+    setNodes((nds) =>
+      nds.map((node) => ({
+        ...node,
+        data: {
+          ...node.data,
+          isActive: !isTerminal(activeSection) && node.id === activeSection,
+          dimmed:
+            !isTerminal(activeSection) &&
+            !isTerminal(node.id) &&
+            node.id !== activeSection,
+        },
+      }))
+    );
+  }, [computedEdges, setEdges]);
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),

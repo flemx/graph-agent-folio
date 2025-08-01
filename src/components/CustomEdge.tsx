@@ -21,8 +21,10 @@ const CustomEdge = memo(({
   sourcePosition,
   targetPosition,
   source,
-}: EdgeProps) => {
+  data,
+}: EdgeProps & { data?: { dimmed?: boolean } }) => {
   const sourceColor = getSourceNodeColor(source);
+  const opacity = data?.dimmed ? 0.25 : 1;
   
   // Create a gentle S-curve regardless of node alignment
   const [edgePath] = getBezierPath({
@@ -49,7 +51,7 @@ const CustomEdge = memo(({
           orient="auto"
           markerUnits="strokeWidth"
         >
-          <path d="M0,0 L0,10 L10,5 z" fill={sourceColor} stroke={sourceColor} />
+          <path d="M0,0 L0,10 L10,5 z" fill={sourceColor} stroke={sourceColor} style={{ opacity }} />
         </marker>
       </defs>
       <BaseEdge
@@ -58,6 +60,7 @@ const CustomEdge = memo(({
         style={{
           stroke: sourceColor,
           strokeWidth: 1.5,
+          opacity,
         }}
         markerEnd={`url(#arrow-${source})`}
       />
