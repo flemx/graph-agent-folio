@@ -142,9 +142,7 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
           ...node.data,
           isActive: !isTerminal(activeSection) && node.id === activeSection,
           dimmed:
-            !isTerminal(activeSection) &&
-            !isTerminal(node.id) &&
-            node.id !== activeSection,
+            !isTerminal(activeSection) && node.id !== activeSection,
         },
       }))
     );
