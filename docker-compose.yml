@@ -8,21 +8,6 @@ services:
     ports:
       - "8000:8000"  # FastAPI exposed port
 
-    # Supply any runtime env-vars here (OpenAI keys, etc.)
     environment:
       PYTHONUNBUFFERED: "1"
-      # OPENAI_API_KEY: "${OPENAI_API_KEY}"
-
-    # Uncomment the two mounts below for live-reload style dev inside container
-    # volumes:
-    #   - ./backend:/backend
-    #   - ./frontend:/frontend
-    #   - /backend/app/static  # static path stays inside container after build
-    # command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-
-    # Health-check (optional)
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:8000/health" ]
-    #   interval: 30s
-    #   timeout: 10s
-    #   retries: 3
+      OPENAI_API_KEY: "${OPENAI_API_KEY}"
