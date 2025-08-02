@@ -20,12 +20,12 @@ load_dotenv()
 
 memory = InMemorySaver()
 
-class inputState(TypedDict):
+class InputState(TypedDict):
     """Input state for the agent graph."""
     linkedin_id: str
     next_node: Literal["about", "projects", "experience"]
 
-class AgentState(inputState):
+class AgentState(InputState):
     """State for the agent graph."""
     current_node: Literal["about", "projects", "experience"]
     linkedin_data: Optional[Dict[str, Any]]
@@ -33,14 +33,11 @@ class AgentState(inputState):
     experience_data: Optional[Dict[str, Any]]
     projects_data: Optional[Dict[str, Any]]
 
-graph_builder = StateGraph(AgentState)
+graph_builder = StateGraph(AgentState, input_schema=InputState)
 
 
 
 
-async def routing_node(state: AgentState) -> Literal["about", "projects", "experience", "linkedin"]:
-    """Node for routing the user to the appropriate section."""
-    return  state["next_node"]
 
     
 async def linkedin_node(state: AgentState):
@@ -49,6 +46,11 @@ async def linkedin_node(state: AgentState):
     return {
         "linkedin_data": linkedin_data,
     }
+
+async def routing_node(state: AgentState) -> Literal["about", "projects", "experience"]:
+    """Node for routing the user to the appropriate section."""
+    return  state["next_node"]
+
 
 async def about_node(state: AgentState):
     """Node for the about section."""
@@ -72,14 +74,15 @@ async def experience_node(state: AgentState):
         "experience_data": {"experience": [{"company": "Company 1", "title": "Title 1", "description": "Description 1"}, {"company": "Company 2", "title": "Title 2", "description": "Description 2"}]}
     }
 
-graph_builder.add_node("routing", routing_node)
+
+
 graph_builder.add_node("linkedin", linkedin_node, cache_policy=CachePolicy())
 graph_builder.add_node("about", about_node, cache_policy=CachePolicy())
 graph_builder.add_node("projects", projects_node, cache_policy=CachePolicy())
 graph_builder.add_node("experience", experience_node, cache_policy=CachePolicy())
-graph_builder.add_edge(START, "routing")
-graph_builder.add_edge("linkedin", "routing")
-graph_builder.add_conditional_edges(START, "routing")
+
+graph_builder.add_edge(START, "linkedin")
+graph_builder.add_conditional_edges("linkedin", routing_node)
 
 
 graph = graph_builder.compile()
