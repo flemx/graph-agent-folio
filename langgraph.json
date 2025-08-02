@@ -1,8 +1,8 @@
 {
     "python_version": "3.12",
     "graphs": {
-      "agent": "./agent/portfolio_graph.py:graph"
+      "agent": "backend.app.agent.portfolio_graph:graph"
     },
-    "dependencies": ["./agent"],
+    "dependencies": ["./backend/app/agent"],
     "env": ".env"
-  }
+}
