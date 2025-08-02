@@ -1,0 +1,8 @@
+{
+    "python_version": "3.12",
+    "graphs": {
+      "agent": "./agent/portfolio_graph.py:graph"
+    },
+    "dependencies": ["./agent"],
+    "env": ".env"
+  }

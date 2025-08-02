@@ -1,0 +1,26 @@
+[project]
+name = "agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12.0"
+dependencies = [
+    "python-dotenv>=1.0.1",
+    "pydantic>=2.11.5",
+    "pydantic-settings>=2.9.1",
+    "pydantic_core>=2.20.1",
+    "langchain-openai>=0.3.19",
+    "langgraph>=0.4.7",
+    "langchain>=0.3.25",
+    "langgraph-cli[inmem]>=0.3.3",
+    "langgraph-api>= 0.2.56",
+    "langgraph-api[inmem]>= 0.2.56",
+]
+
+[project.optional-dependencies]
+dev = ["ruff>=0.11.12"]
+
+
+[[project.authors]]
+email = "dfleminks@salesforce.com"
+name = "Damien Fleminks"
