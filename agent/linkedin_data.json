@@ -1,0 +1,624 @@
+{
+    "profile_id": "fleminks",
+    "first_name": "Damien",
+    "last_name": "Fleminks",
+    "sub_title": "Product & Engineering at Agentforce",
+    "profile_picture": "https://media.licdn.com/dms/image/v2/D4D03AQFXvE4EZ403Jg/profile-displayphoto-crop_800_800/B4DZenqqGNGgAM-/0/1750864667446?e=1756944000&v=beta&t=1--TuulzZx1x5hvzTDhl0n4u7eFcvikWkIIkydJXrS4",
+    "background_image": "https://media.licdn.com/dms/image/v2/C5616AQF1ddds9Fo3TA/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1517495425933?e=1756944000&v=beta&t=EXnp_a3_7NMaaPmjvDTxdsUDBz71LQyin2DCVvBO--4",
+    "profile_type": "personal",
+    "open_to_work": false,
+    "entity_urn": "ACoAAAobzDUB4jxHf_TkVcYWn_6jaIfHZVqYM5E",
+    "object_urn": 169593909,
+    "birth_date": null,
+    "summary": "As a passionate technologist, inventor, and entrepreneur, I thrive on turning bold ideas into real-world impact. I’m driven by the challenge of building transformative solutions that push the boundaries of what technology can do — and how it can change the way we work and live.\n\nIn my role as Lead AI Engineer at Salesforce, I focus on pioneering intelligent agent technologies that elevate customer experiences and drive operational excellence. From piloting new features to leading the development of Agentforce, I work at the intersection of product innovation and real-world application, collaborating closely with cross-functional teams and customers.\n\nI bring a builder’s mindset and a forward-thinking approach to every challenge, always seeking new ways to bridge vision and execution. If you’re passionate about innovation, AI, and what’s next — let’s connect.",
+    "location": {
+        "country": "Netherlands",
+        "short": "Amsterdam, North Holland",
+        "city": "Amsterdam",
+        "state": "North Holland",
+        "default": "Amsterdam, North Holland, Netherlands"
+    },
+    "premium": false,
+    "influencer": false,
+    "treasury_media": [],
+    "languages": {
+        "primary_locale": {
+            "country": "NL",
+            "language": "nl"
+        },
+        "supported_locales": [
+            {
+                "country": "NL",
+                "language": "nl"
+            }
+        ],
+        "profile_languages": [
+            {
+                "name": "Dutch",
+                "proficiency": "NATIVE_OR_BILINGUAL"
+            },
+            {
+                "name": "English",
+                "proficiency": "NATIVE_OR_BILINGUAL"
+            }
+        ]
+    },
+    "industry": "Computer Software",
+    "education": [
+        {
+            "date": {
+                "start": {
+                    "month": null,
+                    "day": null,
+                    "year": 2017
+                },
+                "end": {
+                    "month": null,
+                    "day": null,
+                    "year": 2021
+                }
+            },
+            "school": {
+                "name": "National College of Ireland",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQGFB3MOKsdm1A/company-logo_400_400/company-logo_400_400/0/1731326244320/national_college_of_ireland_logo?e=1756944000&v=beta&t=yuiObnGiJEUo1hcJpposIoY13Ny6DexJYml7mXJXoUk",
+                "url": "https://www.linkedin.com/school/national-college-of-ireland/"
+            },
+            "degree_name": "Bachelor of Science (Honours) ",
+            "description": "Completed study in part time",
+            "field_of_study": "Computer Science",
+            "grade": null
+        }
+    ],
+    "patents": [],
+    "awards": [],
+    "certifications": [
+        {
+            "name": "Salesforce Certified Platform App Builder",
+            "date": {
+                "start": {
+                    "month": 7,
+                    "day": null,
+                    "year": 2017
+                },
+                "end": {
+                    "month": null,
+                    "day": null,
+                    "year": null
+                }
+            },
+            "authority": "Salesforce",
+            "url": "http://certification.salesforce.com/verification?&fullname=Damien%20Fleminks",
+            "license_number": "17499407",
+            "display_source": "salesforce.com",
+            "company": {
+                "id": null,
+                "name": "Salesforce",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQHZ9xYomLW7zg/company-logo_400_400/company-logo_400_400/0/1630658255326/salesforce_logo?e=1756944000&v=beta&t=CNqdkvb23h3c1fOKkOZTZ9dfeMhVC-qSfujYsQ34aqc",
+                "url": null
+            }
+        },
+        {
+            "name": "Salesforce Certified Platform Developer I",
+            "date": {
+                "start": {
+                    "month": 6,
+                    "day": null,
+                    "year": 2018
+                },
+                "end": {
+                    "month": 6,
+                    "day": null,
+                    "year": 2018
+                }
+            },
+            "authority": "Salesforce",
+            "url": "http://certification.salesforce.com/verification?&fullname=damien%20fleminks",
+            "license_number": "18689209",
+            "display_source": "salesforce.com",
+            "company": {
+                "id": null,
+                "name": "Salesforce",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQHZ9xYomLW7zg/company-logo_400_400/company-logo_400_400/0/1630658255326/salesforce_logo?e=1756944000&v=beta&t=CNqdkvb23h3c1fOKkOZTZ9dfeMhVC-qSfujYsQ34aqc",
+                "url": null
+            }
+        },
+        {
+            "name": "Salesforce Certified Administrator",
+            "date": {
+                "start": {
+                    "month": 6,
+                    "day": null,
+                    "year": 2017
+                },
+                "end": {
+                    "month": 6,
+                    "day": null,
+                    "year": 2017
+                }
+            },
+            "authority": "Salesforce",
+            "url": "http://certification.salesforce.com/certification-detail?conId=0034A00002lAnD7QAK",
+            "license_number": "17301539",
+            "display_source": "salesforce.com",
+            "company": {
+                "id": null,
+                "name": "Salesforce",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQHZ9xYomLW7zg/company-logo_400_400/company-logo_400_400/0/1630658255326/salesforce_logo?e=1756944000&v=beta&t=CNqdkvb23h3c1fOKkOZTZ9dfeMhVC-qSfujYsQ34aqc",
+                "url": null
+            }
+        }
+    ],
+    "organizations": [],
+    "projects": [
+        {
+            "title": "Test project",
+            "date": {
+                "start": {
+                    "month": 1,
+                    "day": null,
+                    "year": 2025
+                },
+                "end": {
+                    "month": 3,
+                    "day": null,
+                    "year": 2025
+                }
+            },
+            "description": "# this is a test project\n\n<img src=\"https://media.licdn.com/dms/image/v2/D4E2DAQGz0Q3dXcPkgw/profile-treasury-image-shrink_8192_8192/B4EZhmjuXYHgAs-/0/1754067298300?e=1754679600&v=beta&t=UsWVOi-IRfsWtvHQrWxEt5mbDdPJ78XzeXWTDLN6tIk\">",
+            "contributors": [
+                {
+                    "type": "standardizedContributor",
+                    "first_name": "Damien",
+                    "last_name": "Fleminks",
+                    "name": null,
+                    "headline": "Product & Engineering at Agentforce"
+                }
+            ]
+        },
+        {
+            "title": "test project 2",
+            "date": {
+                "start": {
+                    "month": 1,
+                    "day": null,
+                    "year": 2024
+                },
+                "end": {
+                    "month": 2,
+                    "day": null,
+                    "year": 2025
+                }
+            },
+            "description": "test project 2 description",
+            "contributors": [
+                {
+                    "type": "standardizedContributor",
+                    "first_name": "Damien",
+                    "last_name": "Fleminks",
+                    "name": null,
+                    "headline": "Product & Engineering at Agentforce"
+                }
+            ]
+        }
+    ],
+    "publications": [],
+    "courses": [
+        {
+            "name": "3PAR Storage",
+            "number": null
+        },
+        {
+            "name": "PROGRAMMATIC DEVELOPMENT USING APEX AND VISUALFORCE",
+            "number": "DEV-450"
+        },
+        {
+            "name": "SUSE Linux Enterprise Server 12 Administration",
+            "number": null
+        },
+        {
+            "name": "VMware vSphere: Install, Configure, Manage [V6]",
+            "number": null
+        }
+    ],
+    "test_scores": [],
+    "position_groups": [
+        {
+            "company": {
+                "id": 3185,
+                "name": "Salesforce",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQHZ9xYomLW7zg/company-logo_400_400/company-logo_400_400/0/1630658255326/salesforce_logo?e=1756944000&v=beta&t=CNqdkvb23h3c1fOKkOZTZ9dfeMhVC-qSfujYsQ34aqc",
+                "url": "https://www.linkedin.com/company/salesforce/",
+                "employees": {
+                    "start": 10001,
+                    "end": null
+                }
+            },
+            "date": {
+                "start": {
+                    "month": 5,
+                    "day": null,
+                    "year": 2017
+                },
+                "end": {
+                    "month": null,
+                    "day": null,
+                    "year": null
+                }
+            },
+            "profile_positions": [
+                {
+                    "location": "Amsterdam, North Holland, Netherlands",
+                    "date": {
+                        "start": {
+                            "month": 12,
+                            "day": null,
+                            "year": 2024
+                        },
+                        "end": {
+                            "month": null,
+                            "day": null,
+                            "year": null
+                        }
+                    },
+                    "company": "Salesforce",
+                    "description": "•\tLead the design, development, and deployment of AI-powered agentic tools to enhance the implementation and adoption of Agentforce.\n\n•\tSpearhead the seamless integration of our AI solutions into various stages of the customer journey, collaborating closely with customers\n\n•\tProvide strategic insights and technical expertise about Agentforce and AI, hosting technical demo's and best practices\n\n•\tChampion innovation and scalability, building solutions that not only address immediate challenges but also pave the way for next-generation AI applications.",
+                    "title": "Lead AI Engineer - Agentforce Product",
+                    "employment_type": "Full-time"
+                },
+                {
+                    "location": "Amsterdam, North Holland, Netherlands",
+                    "date": {
+                        "start": {
+                            "month": 4,
+                            "day": null,
+                            "year": 2023
+                        },
+                        "end": {
+                            "month": 1,
+                            "day": null,
+                            "year": 2025
+                        }
+                    },
+                    "company": "Salesforce",
+                    "description": "Lead product & development for our demo automation platform",
+                    "title": "Lead Platform Architect - Demo Platforms",
+                    "employment_type": "Full-time"
+                },
+                {
+                    "location": null,
+                    "date": {
+                        "start": {
+                            "month": 6,
+                            "day": null,
+                            "year": 2022
+                        },
+                        "end": {
+                            "month": 4,
+                            "day": null,
+                            "year": 2023
+                        }
+                    },
+                    "company": "Salesforce",
+                    "description": "-  Drive Web3 GTM and create POC's with customers\n-  Web3 / blockchain product development",
+                    "title": "Partner, Salesforce Web3 Studio ",
+                    "employment_type": "Part-time"
+                },
+                {
+                    "location": "Amsterdam, North Holland, Netherlands",
+                    "date": {
+                        "start": {
+                            "month": 2,
+                            "day": null,
+                            "year": 2022
+                        },
+                        "end": {
+                            "month": 4,
+                            "day": null,
+                            "year": 2023
+                        }
+                    },
+                    "company": "Salesforce",
+                    "description": "-  Build technical proof of concepts and drive customer workshops to co-create a vision with customers",
+                    "title": "Technical Strategist Lead - pre-sales",
+                    "employment_type": "Full-time"
+                },
+                {
+                    "location": "Amsterdam, North Holland, Netherlands",
+                    "date": {
+                        "start": {
+                            "month": 2,
+                            "day": null,
+                            "year": 2019
+                        },
+                        "end": {
+                            "month": 2,
+                            "day": null,
+                            "year": 2022
+                        }
+                    },
+                    "company": "Salesforce",
+                    "description": "Build POC's, host technical customer demo's,  support customer with salesforce architecture",
+                    "title": "Senior Technical Salesforce Consultant - pre-sales",
+                    "employment_type": "Full-time"
+                },
+                {
+                    "location": "County Dublin, Ireland",
+                    "date": {
+                        "start": {
+                            "month": 6,
+                            "day": null,
+                            "year": 2018
+                        },
+                        "end": {
+                            "month": 2,
+                            "day": null,
+                            "year": 2019
+                        }
+                    },
+                    "company": "Salesforce",
+                    "description": null,
+                    "title": "Senior Technical Engineer ",
+                    "employment_type": null
+                },
+                {
+                    "location": "County Dublin, Ireland",
+                    "date": {
+                        "start": {
+                            "month": 5,
+                            "day": null,
+                            "year": 2017
+                        },
+                        "end": {
+                            "month": 8,
+                            "day": null,
+                            "year": 2018
+                        }
+                    },
+                    "company": "Salesforce",
+                    "description": null,
+                    "title": "Technical Engineer",
+                    "employment_type": null
+                }
+            ]
+        },
+        {
+            "company": {
+                "id": 95038318,
+                "name": "Inbox Warmer - email warm up & deliverability",
+                "logo": "https://media.licdn.com/dms/image/v2/D560BAQH9mBjfeliF7g/company-logo_400_400/company-logo_400_400/0/1686130967424?e=1756944000&v=beta&t=-hIJpoqR3dRk-KJKt56yjnbTNzBx6v0Qgd5zeduaiYw",
+                "url": "https://www.linkedin.com/company/inbox-warmer-email-warm-up-deliverability/",
+                "employees": {
+                    "start": 2,
+                    "end": 10
+                }
+            },
+            "date": {
+                "start": {
+                    "month": 1,
+                    "day": null,
+                    "year": 2023
+                },
+                "end": {
+                    "month": 12,
+                    "day": null,
+                    "year": 2023
+                }
+            },
+            "profile_positions": [
+                {
+                    "location": "Amsterdam, North Holland, Netherlands",
+                    "date": {
+                        "start": {
+                            "month": 1,
+                            "day": null,
+                            "year": 2023
+                        },
+                        "end": {
+                            "month": 12,
+                            "day": null,
+                            "year": 2023
+                        }
+                    },
+                    "company": "Inbox Warmer - email warm up & deliverability",
+                    "description": null,
+                    "title": "Co-Founder /  Engineering & Product",
+                    "employment_type": "Self-employed"
+                }
+            ]
+        },
+        {
+            "company": {
+                "id": 1025,
+                "name": "Hewlett Packard Enterprise",
+                "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQG3eeRIFGMG9g/company-logo_400_400/B4EZdkxlEZH0Ac-/0/1749742408362/hewlett_packard_enterprise_logo?e=1756944000&v=beta&t=NwBjCItXOoFGHEZT6DSa0t5kGDQhpQizrlbThc_nTOo",
+                "url": "https://www.linkedin.com/company/hewlett-packard-enterprise/",
+                "employees": {
+                    "start": 10001,
+                    "end": null
+                }
+            },
+            "date": {
+                "start": {
+                    "month": 9,
+                    "day": null,
+                    "year": 2013
+                },
+                "end": {
+                    "month": 4,
+                    "day": null,
+                    "year": 2017
+                }
+            },
+            "profile_positions": [
+                {
+                    "location": "Ireland",
+                    "date": {
+                        "start": {
+                            "month": 3,
+                            "day": null,
+                            "year": 2015
+                        },
+                        "end": {
+                            "month": 4,
+                            "day": null,
+                            "year": 2017
+                        }
+                    },
+                    "company": "Hewlett Packard Enterprise",
+                    "description": "SAN storage solutions expert for HPE Enterprise customers.\n• Software development, server troubleshooting, storage / network",
+                    "title": "Technical Solutions Consultant",
+                    "employment_type": null
+                },
+                {
+                    "location": "Leixlip, Ireland",
+                    "date": {
+                        "start": {
+                            "month": 9,
+                            "day": null,
+                            "year": 2013
+                        },
+                        "end": {
+                            "month": 4,
+                            "day": null,
+                            "year": 2015
+                        }
+                    },
+                    "company": "Hewlett Packard Enterprise",
+                    "description": null,
+                    "title": "Technical Support Engineer",
+                    "employment_type": null
+                }
+            ]
+        },
+        {
+            "company": {
+                "id": 64636,
+                "name": "Pepperminds",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQFRCHOnz2-DTQ/company-logo_400_400/company-logo_400_400/0/1631314960823?e=1756944000&v=beta&t=qUeUV1QxxcdbfMn4TZm436dEBGamMb5hTJ3pdEFf5zk",
+                "url": "https://www.linkedin.com/company/pepperminds/",
+                "employees": {
+                    "start": 1001,
+                    "end": 5000
+                }
+            },
+            "date": {
+                "start": {
+                    "month": 4,
+                    "day": null,
+                    "year": 2010
+                },
+                "end": {
+                    "month": 6,
+                    "day": null,
+                    "year": 2013
+                }
+            },
+            "profile_positions": [
+                {
+                    "location": "Haarlem en omgeving, Nederland",
+                    "date": {
+                        "start": {
+                            "month": 4,
+                            "day": null,
+                            "year": 2010
+                        },
+                        "end": {
+                            "month": 6,
+                            "day": null,
+                            "year": 2013
+                        }
+                    },
+                    "company": "Pepperminds",
+                    "description": "Field Sales / Acquisition / Face-to-Face Marketing / Street Sales Selling subscription nationwide to everyone using people skills.",
+                    "title": "Sales Executive",
+                    "employment_type": null
+                }
+            ]
+        }
+    ],
+    "has_more_positions": false,
+    "volunteer_experiences": [
+        {
+            "date": {
+                "start": {
+                    "month": null,
+                    "day": null,
+                    "year": null
+                },
+                "end": {
+                    "month": null,
+                    "day": null,
+                    "year": null
+                }
+            },
+            "role": "Mentor",
+            "company": {
+                "id": null,
+                "name": "CoderDojo",
+                "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQH30tMleendwA/company-logo_400_400/company-logo_400_400/0/1631341740561?e=1756944000&v=beta&t=BYmj1rrIt2iQbyAd1fugqlTvj-CWvH1WqcE_z3d6OF0",
+                "url": "https://www.linkedin.com/company/coderdojo/"
+            },
+            "cause": "EDUCATION",
+            "description": "Help young students through the basics of coding and to assist them in their own self led learning by creating their own projects. "
+        },
+        {
+            "date": {
+                "start": {
+                    "month": null,
+                    "day": null,
+                    "year": null
+                },
+                "end": {
+                    "month": null,
+                    "day": null,
+                    "year": null
+                }
+            },
+            "role": "Technical Consultant",
+            "company": {
+                "id": null,
+                "name": "Salesforce.org",
+                "logo": "https://media.licdn.com/dms/image/v2/C560BAQESN7vkSuLwbA/company-logo_400_400/company-logo_400_400/0/1630649992797/salesforce_org_logo?e=1756944000&v=beta&t=derl8CbrX0XuAJAOMjDLC0d213IB9_7faii0VRU-lvg",
+                "url": "https://www.linkedin.com/showcase/salesforce-org/"
+            },
+            "cause": null,
+            "description": "Helping non-profit organisations using salesforce with implementations and product development."
+        }
+    ],
+    "skills": [
+        "Python (Programming Language)",
+        "Artificial Intelligence (AI)",
+        "agentforce",
+        "Retrieval-Augmented Generation (RAG)",
+        "Product Management",
+        "Architecture",
+        "JavaScript",
+        "Salesforce.com Development",
+        "Pre-Sales Technical Consulting",
+        "Technical Support",
+        "Direct Sales",
+        "Web Development",
+        "Consulting",
+        "Front-end Development",
+        "Linux",
+        "MySQL",
+        "HTML",
+        "Creative Problem Solving",
+        "Communication Skills",
+        "English"
+    ],
+    "network_info": null,
+    "related_profiles": null,
+    "contact_info": {
+        "websites": [
+            {
+                "type": "portfolio",
+                "url": "https://github.com/flemx"
+            }
+        ],
+        "email": null,
+        "twitter": null,
+        "phone_numbers": []
+    },
+    "verifications_info": null
+}
