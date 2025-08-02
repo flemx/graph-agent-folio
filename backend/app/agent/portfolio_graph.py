@@ -7,7 +7,7 @@ from langgraph.graph.state import CompiledStateGraph
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.types import CachePolicy
 from pydantic import BaseModel, Field
-from typing import TypedDict, List, Optional, Dict, Any, Literal, Annotated, Union
+from typing import TypedDict, NotRequired, List, Optional, Dict, Any, Literal, Annotated, Union
 from .tools import get_linkedin_data
 import json
 import asyncio
@@ -21,19 +21,15 @@ load_dotenv()
 memory = InMemorySaver()
 
 
-class AgentState(BaseModel):
+class AgentState(TypedDict):
     """State for the agent graph."""
-    linkedin_id: str = Field(..., description="LinkedIn ID of the user")
-    next_node: Literal["about", "projects", "experience"] = Field(
-        ..., description="The next section of the portfolio to generate"
-    )
-    current_node: Optional[Literal["about", "projects", "experience"]] = Field(
-        default=None, description="The node that has just been executed"
-    )
-    linkedin_data: Optional[Dict[str, Any]] = None
-    about_data: Optional[Dict[str, Any]] = None
-    experience_data: Optional[Dict[str, Any]] = None
-    projects_data: Optional[Dict[str, Any]] = None
+    linkedin_id: str
+    next_node: Literal["about", "projects", "experience"]
+    current_node: NotRequired[Literal["about", "projects", "experience"]]
+    linkedin_data: NotRequired[Dict[str, Any]]
+    about_data:   NotRequired[Dict[str, Any]]
+    experience_data: NotRequired[Dict[str, Any]]
+    projects_data:  NotRequired[Dict[str, Any]]
 
 graph_builder = StateGraph(AgentState)
 
@@ -41,14 +37,18 @@ graph_builder = StateGraph(AgentState)
     
 async def linkedin_node(state: AgentState):
     """Node for routing the user to the appropriate section."""
-    linkedin_data = await get_linkedin_data(state.linkedin_id)
+    # `state` is a plain dict at runtime (TypedDict), so use dict access
+    if state.get("linkedin_data") == None:
+        linkedin_data = await get_linkedin_data(state["linkedin_id"])
+    else:
+        linkedin_data = state["linkedin_data"]
     return {
         "linkedin_data": linkedin_data,
     }
 
 async def routing_node(state: AgentState) -> Literal["about", "projects", "experience"]:
     """Node for routing the user to the appropriate section."""
-    return state.next_node
+    return state["next_node"]
 
 
 async def about_node(state: AgentState):
@@ -85,14 +85,3 @@ graph_builder.add_conditional_edges("linkedin", routing_node)
 
 
 graph = graph_builder.compile()
-
-async def test_graph():
-    linkedin_data = {
-        "name": "David Fleminks",
-        "location": "San Francisco, CA",
-        "summary": "I am a software engineer with a passion for building scalable and efficient systems."
-    }
-    result = await graph.ainvoke({"linkedin_data": linkedin_data, "next_node": "about"})
-    print(json.dumps(result, indent=4))
-
-#await test_graph()
