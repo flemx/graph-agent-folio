@@ -8,7 +8,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.types import CachePolicy
 from pydantic import BaseModel, Field
 from typing import TypedDict, List, Optional, Dict, Any, Literal, Annotated, Union
-from tools import get_linkedin_data
+from .tools import get_linkedin_data
 import json
 import asyncio
 import os
@@ -34,9 +34,6 @@ class AgentState(InputState):
     projects_data: Optional[Dict[str, Any]]
 
 graph_builder = StateGraph(AgentState, input_schema=InputState)
-
-
-
 
 
     
