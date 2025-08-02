@@ -20,33 +20,35 @@ load_dotenv()
 
 memory = InMemorySaver()
 
-class InputState(TypedDict):
-    """Input state for the agent graph."""
-    linkedin_id: str
-    next_node: Literal["about", "projects", "experience"]
 
-class AgentState(InputState):
+class AgentState(BaseModel):
     """State for the agent graph."""
-    current_node: Literal["about", "projects", "experience"]
-    linkedin_data: Optional[Dict[str, Any]]
-    about_data: Optional[Dict[str, Any]]
-    experience_data: Optional[Dict[str, Any]]
-    projects_data: Optional[Dict[str, Any]]
+    linkedin_id: str = Field(..., description="LinkedIn ID of the user")
+    next_node: Literal["about", "projects", "experience"] = Field(
+        ..., description="The next section of the portfolio to generate"
+    )
+    current_node: Optional[Literal["about", "projects", "experience"]] = Field(
+        default=None, description="The node that has just been executed"
+    )
+    linkedin_data: Optional[Dict[str, Any]] = None
+    about_data: Optional[Dict[str, Any]] = None
+    experience_data: Optional[Dict[str, Any]] = None
+    projects_data: Optional[Dict[str, Any]] = None
 
-graph_builder = StateGraph(AgentState, input_schema=InputState)
+graph_builder = StateGraph(AgentState)
 
 
     
 async def linkedin_node(state: AgentState):
     """Node for routing the user to the appropriate section."""
-    linkedin_data = await get_linkedin_data(state["linkedin_id"])
+    linkedin_data = await get_linkedin_data(state.linkedin_id)
     return {
         "linkedin_data": linkedin_data,
     }
 
 async def routing_node(state: AgentState) -> Literal["about", "projects", "experience"]:
     """Node for routing the user to the appropriate section."""
-    return  state["next_node"]
+    return state.next_node
 
 
 async def about_node(state: AgentState):

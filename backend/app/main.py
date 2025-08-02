@@ -2,16 +2,17 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 from .agent.portfolio_graph import graph   # ← LangGraph import
+from .agent.portfolio_graph import AgentState
 
 app = FastAPI()
 
-# Build-time: React bundle is copied to backend/static
 static_path = Path(__file__).parent / "static"
-app.mount("/", StaticFiles(directory=static_path, html=True), name="site")
+if static_path.exists():            # <── dev safety
+    app.mount("/", StaticFiles(directory=static_path, html=True), name="site")
 
 # Example API that triggers the graph
 @app.post("/api/portfolio")
-async def run_portfolio(input: dict):
+async def run_portfolio(input: AgentState):
     """
     Expected body:
       {
