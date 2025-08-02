@@ -34,3 +34,6 @@ __pycache__
 .venv
 .env
 *.egg-info
+
+# langgraph
+.langgraph_api
