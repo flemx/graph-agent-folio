@@ -33,3 +33,4 @@ __pycache__
 *.pyz
 .venv
 .env
+*.egg-info
