@@ -1,73 +1,102 @@
-# Welcome to your Lovable project
+# Graph-Agent-Folio
 
-## Project info
+A full-stack demo that turns your LinkedIn profile into an **interactive LangGraph agent** and a portfolio website.
 
-**URL**: https://lovable.dev/projects/66a29936-b6c0-4bd2-b80a-b9bc61d60adc
-
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/66a29936-b6c0-4bd2-b80a-b9bc61d60adc) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+LinkedIn → LangGraph workflow → FastAPI JSON API → React / Vite UI
 ```
 
-**Edit a file directly in GitHub**
+The backend scrapes / loads LinkedIn data, feeds it through a LangGraph workflow, and exposes structured sections (About, Projects, Experience).  The React front-end visualises the workflow and renders the generated content.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+---
+## ✨  What this project showcases
 
-**Use GitHub Codespaces**
+* Dynamic, agent-driven portfolio generated from real profile data.
+* End-to-end LangGraph example (graph builder, conditional edges, in-memory checkpoint).
+* Type-safe React + Tailwind UI with workflow visualisation.
+* One-image production build (multi-stage Dockerfile) **or** lean local dev with hot-reload.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
+## 🗂️  Repository layout
 
-## What technologies are used for this project?
+```
+backend/                FastAPI app + LangGraph agent
+└─ app/
+   ├─ main.py           FastAPI entry-point (serves API + static bundle)
+   └─ agent/            LangGraph workflow & tools
+frontend/               Vite / React / shadcn-ui
+Dockerfile              Multi-stage build (React → FastAPI)
+docker-compose.yml      Compose service for production / staging
+langgraph.json          Graph spec for `langgraph dev`
+```
 
-This project is built with:
+---
+## 🚀  Quick start (production)
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```bash
+# 1. Build & run the full stack
+docker compose up --build
 
-## How can I deploy this project?
+# FastAPI: http://localhost:8000
+# React bundle is served at /
+```
 
-Simply open [Lovable](https://lovable.dev/projects/66a29936-b6c0-4bd2-b80a-b9bc61d60adc) and click on Share -> Publish.
+The container builds the React bundle, installs Python deps, copies the bundle
+into `backend/app/static`, and starts Uvicorn on port **8000**.
 
-## Can I connect a custom domain to my Lovable project?
+---
+## 🛠️  Local development workflow
 
-Yes, you can!
+### Prerequisites
+* Python 3.12
+* Node 20+
+* (optional) Make or pnpm
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### 1. Set up virtualenv & JS deps
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -e backend[dev]      # editable install with ruff etc.
+cd frontend && npm install       # or pnpm i
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+### 2. Run with hot reload (two terminals)
+```bash
+# terminal 1 – Vite + React
+cd frontend
+npm run dev          # http://localhost:5173
+
+# terminal 2 – FastAPI + LangGraph
+cd backend
+uvicorn backend.app.main:app --reload --port 8000
+```
+
+Add this proxy in `frontend/vite.config.ts` so the UI can call the API without CORS issues:
+```ts
+server: {
+  proxy: {
+    '/api': 'http://localhost:8000',
+  },
+},
+```
+
+### 3. Run LangGraph alone (optional)
+Useful for debugging the graph in LangGraph Studio.
+```bash
+source .venv/bin/activate
+langgraph dev                # loads graph from langgraph.json on port 2024
+```
+
+
+---
+## 🔐  Environment variables
+Create a `.env` file at repo root (loaded by both FastAPI and LangGraph):
+```
+OPENAI_API_KEY=sk-...
+LINKEDIN_USERNAME=my_user   # if you add live scraping
+LINKEDIN_PASSWORD=secret
+```
+
+For local dev you can export them instead.
+
+---
+> _Built to demonstrate agentic applications with LangGraph & a modern React UI._
