@@ -25,7 +25,7 @@ class AgentState(TypedDict):
     """State for the agent graph."""
     linkedin_id: str
     next_node: Literal["about", "projects", "experience"]
-    current_node: NotRequired[Literal["about", "projects", "experience"]]
+    current_node: NotRequired[Literal["about", "projects", "experience","end"]]
     linkedin_data: NotRequired[Dict[str, Any]]
     about_data:   NotRequired[Dict[str, Any]]
     experience_data: NotRequired[Dict[str, Any]]
