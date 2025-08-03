@@ -110,8 +110,9 @@ graph_builder.add_node("experience", experience_node, cache_policy=CachePolicy()
 
 graph_builder.add_edge(START, "linkedin")
 graph_builder.add_edge("linkedin", "about")
-graph_builder.add_edge("linkedin", "projects")
-graph_builder.add_edge("linkedin", "experience")
+graph_builder.add_edge("about", "projects")
+graph_builder.add_edge("projects", "experience")
+graph_builder.add_edge("experience", END)
 
 
 graph = graph_builder.compile()
