@@ -1,103 +1,103 @@
+import { useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Github, Play, FileText } from 'lucide-react';
+import { Github, Play, Video, Image as ImageIcon } from 'lucide-react';
+import { Project } from '@/types/project';
+import useEmblaCarousel from 'embla-carousel-react';
 
 interface ProjectCardProps {
-  title: string;
-  description: string;
-  problemSolved: string;
-  technologies: string[];
-  demoUrl?: string;
-  sourceUrl?: string;
-  architectureUrl?: string;
-  screenshots: string[];
-  category: 'agent' | 'llm' | 'workflow' | 'other';
+  project: Project;
 }
 
-const ProjectCard = ({
-  title,
-  description,
-  problemSolved,
-  technologies,
-  demoUrl,
-  sourceUrl,
-  architectureUrl,
-  screenshots,
-  category
-}: ProjectCardProps) => {
-  const getCategoryIcon = () => {
-    switch (category) {
-      case 'agent': return '🤖';
-      case 'llm': return '🧠';
-      case 'workflow': return '⚡';
-      default: return '💡';
-    }
-  };
+const ProjectCard = ({ project }: ProjectCardProps) => {
+  const [emblaRef] = useEmblaCarousel({ loop: false, skipSnaps: false });
 
-  return (
-    <Card className="group hover:shadow-content transition-all duration-300 bg-gradient-secondary border-workflow-border">
-      <CardHeader>
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-2xl">{getCategoryIcon()}</span>
-          <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-            {category.toUpperCase()}
-          </Badge>
-        </div>
-        <CardTitle className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
-          {title}
-        </CardTitle>
-        <CardDescription className="text-muted-foreground">
-          {description}
-        </CardDescription>
-      </CardHeader>
-      
-      <CardContent className="space-y-4">
-        {/* Problem Solved */}
-        <div className="p-4 bg-accent/5 rounded-lg border border-accent/20">
-          <h4 className="font-medium text-sm text-accent mb-2">Problem Solved</h4>
-          <p className="text-sm text-foreground/80">{problemSolved}</p>
-        </div>
-
-        {/* Screenshot Placeholder */}
+  const renderImages = useCallback(() => {
+    if (!project.images || project.images.length === 0) {
+      return (
         <div className="aspect-video bg-muted rounded-lg border border-workflow-border flex items-center justify-center">
           <div className="text-center text-muted-foreground">
-            <FileText className="w-8 h-8 mx-auto mb-2 opacity-50" />
-            <p className="text-sm">Screenshot/Demo Video</p>
-            <p className="text-xs opacity-70">Coming Soon</p>
+            <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-50" />
+            <p className="text-sm">No screenshot available</p>
           </div>
         </div>
+      );
+    }
+
+    if (project.images.length === 1) {
+      return (
+        <img
+          src={project.images[0]}
+          alt={project.title}
+          className="aspect-video w-full rounded-lg border border-workflow-border object-cover"
+        />
+      );
+    }
+
+    return (
+      <div className="overflow-hidden rounded-lg border border-workflow-border" ref={emblaRef}>
+        <div className="flex">
+          {project.images.map((url, idx) => (
+            <img
+              key={idx}
+              src={url}
+              alt={`${project.title}-${idx}`}
+              className="aspect-video object-cover min-w-full"
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }, [project, emblaRef]);
+
+  return (
+    <Card className="bg-gradient-secondary border-workflow-border">
+      <CardHeader>
+        <CardTitle className="text-xl font-semibold text-foreground">
+          {project.title}
+        </CardTitle>
+        <CardDescription className="text-muted-foreground">
+          {project.description}
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent className="space-y-4">
+        {/* Images / Carousel */}
+        {renderImages()}
 
         {/* Technologies */}
-        <div>
-          <h4 className="font-medium text-sm mb-2">Technologies</h4>
-          <div className="flex flex-wrap gap-2">
-            {technologies.map((tech, index) => (
-              <Badge key={index} variant="outline" className="text-xs border-primary/30">
-                {tech}
-              </Badge>
-            ))}
+        {project.technologies && project.technologies.length > 0 && (
+          <div>
+            <h4 className="font-medium text-sm mb-2">Technologies</h4>
+            <div className="flex flex-wrap gap-2">
+              {project.technologies.map((tech) => (
+                <Badge key={tech} variant="outline" className="text-xs border-primary/30">
+                  {tech}
+                </Badge>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Action Buttons */}
-        <div className="flex gap-2 pt-2">
-          {demoUrl && (
-            <Button size="sm" className="flex-1 bg-gradient-primary hover:opacity-90">
+        <div className="flex gap-2 pt-2 flex-wrap">
+          {project.demoVideoUrl && (
+            <Button size="sm" variant="outline" className="border-accent/30 hover:bg-accent/10">
+              <Video className="w-4 h-4 mr-2" />
+              Demo Video
+            </Button>
+          )}
+          {project.liveDemoUrl && (
+            <Button size="sm" className="bg-gradient-primary hover:opacity-90">
               <Play className="w-4 h-4 mr-2" />
               Live Demo
             </Button>
           )}
-          {sourceUrl && (
-            <Button size="sm" variant="outline" className="flex-1 border-primary/30 hover:bg-primary/10">
+          {project.sourceUrl && (
+            <Button size="sm" variant="outline" className="border-primary/30 hover:bg-primary/10">
               <Github className="w-4 h-4 mr-2" />
               Source
-            </Button>
-          )}
-          {architectureUrl && (
-            <Button size="sm" variant="outline" className="border-accent/30 hover:bg-accent/10">
-              <FileText className="w-4 h-4 mr-2" />
-              Architecture
             </Button>
           )}
         </div>
