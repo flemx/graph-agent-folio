@@ -151,20 +151,20 @@
     "organizations": [],
     "projects": [
         {
-            "title": "Test project",
+            "title": "Agentforce Creator MCP",
             "date": {
                 "start": {
-                    "month": 1,
+                    "month": 5,
                     "day": null,
                     "year": 2025
                 },
                 "end": {
-                    "month": 3,
+                    "month": 5,
                     "day": null,
                     "year": 2025
                 }
             },
-            "description": "# this is a test project\n\n<img src=\"https://media.licdn.com/dms/image/v2/D4E2DAQGz0Q3dXcPkgw/profile-treasury-image-shrink_8192_8192/B4EZhmjuXYHgAs-/0/1754067298300?e=1754679600&v=beta&t=UsWVOi-IRfsWtvHQrWxEt5mbDdPJ78XzeXWTDLN6tIk\">",
+            "description": "# AgentForce Creator MCP\n\nAn intelligent MCP server that automatically generates and deploys Agentforce agents on Salesforce. In this demo we connect to a Salesforce org, let the agent analyze support case history to identify common issues, and create a tailored AI agent based on this analysis. \n\n**Key Features:**\n- Analyzes Salesforce case data to identify automation opportunities\n- Generates reports with recommendations\n- Automatically creates and deploys custom Agentforce agents\n- Leverages agentforce-sdk and Salesforce MCP servers\n\n**Resources:**\n- 📁 [Source Code](https://github.com/flemx/agent-creator-mcp)\n- 🎥 [Video Demo](https://mrvecyvyomqjougfnpdo.supabase.co/storage/v1/object/public/portfolio//Creating%20an%20AgentForce%20Agent%20(1).mp4)\n- 📸 [Screenshots](https://mrvecyvyomqjougfnpdo.supabase.co/storage/v1/object/public/portfolio//agentforce_creator_mcp.jpg)",
             "contributors": [
                 {
                     "type": "standardizedContributor",
@@ -586,6 +586,11 @@
         }
     ],
     "skills": [
+        "Entrepreneurship",
+        "TypeScript",
+        "Engineering",
+        "Marketing",
+        "Large Language Models (LLM)",
         "Python (Programming Language)",
         "Artificial Intelligence (AI)",
         "agentforce",
@@ -600,12 +605,7 @@
         "Web Development",
         "Consulting",
         "Front-end Development",
-        "Linux",
-        "MySQL",
-        "HTML",
-        "Creative Problem Solving",
-        "Communication Skills",
-        "English"
+        "Linux"
     ],
     "network_info": null,
     "related_profiles": null,
