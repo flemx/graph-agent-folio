@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
-from typing import TypedDict
-from .agent.portfolio_graph import graph   # ← LangGraph import
-from .agent.portfolio_graph import AgentState
+from typing import TypedDict, Any
+import json
+from pydantic import BaseModel
+from .agent.portfolio_graph import InputState, OutputState, graph
 
 app = FastAPI()
 
@@ -14,21 +15,18 @@ if static_path.exists():            # <── dev safety
 
 # Example API that triggers the graph
 @app.post("/api/portfolio")
-async def run_portfolio(input: AgentState):
+async def run_portfolio(input: InputState) -> OutputState:
     result = None
-    async for event in graph.astream(input, stream_mode=["custom", "messages", "state"]):
-        # `event` is a 2-tuple: (event_type, payload)
+    async for event in graph.astream(input, stream_mode=["custom", "values"]):
         event_type, payload = event
 
         if event_type == "custom":
-            # your streamed snapshots
-            print(payload)
-        elif event_type == "state":
-            # final graph state (when it appears)
+            print(payload)  # already JSON
+        elif event_type == "values":
             result = payload
         else:
-            # e.g. "messages" or any other types
             print(event_type, payload)
-    print("result: ",result)
-    return result
+
+    #print("RESULT:", json.dumps(to_jsonable(result), indent=2, ensure_ascii=False))
+    return  result
 
