@@ -2,7 +2,7 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, END, START
 from langgraph.config import get_stream_writer
-from typing import TypedDict, NotRequired, Dict, Any 
+from typing import TypedDict, NotRequired, Dict, Any, Literal
 from .tools import get_linkedin_data, stream_state
 from .schemas.linkedin_profile_models import PersonalProfileModel
 from .schemas.about_dict import AboutSectionDict
@@ -22,11 +22,11 @@ class OutputState(TypedDict):
     about_data:   NotRequired[Dict[str, Any]]
     experience_data: NotRequired[Dict[str, Any]]
     projects_data:  NotRequired[ProjectsSectionDict]
+    linkedin_status: Literal["found", "not_found"]
 
 class OverallState(InputState, OutputState):
     """State for the agent graph."""
-    linkedin_data: NotRequired[PersonalProfileModel]
-    
+    linkedin_data: NotRequired[PersonalProfileModel] | None
 
 graph_builder = StateGraph(OverallState, input_schema=InputState, output_schema=OutputState)
 
@@ -34,18 +34,24 @@ graph_builder = StateGraph(OverallState, input_schema=InputState, output_schema=
     
 async def linkedin_node(state: OverallState):
     """Node for routing the user to the appropriate section."""
-    # `state` is a plain dict at runtime (TypedDict), so use dict access
-    if state.get("linkedin_data") == None:
-        raw_data = await get_linkedin_data(state["linkedin_id"])
-        # Parse into Pydantic model so downstream nodes can use attribute access
-        linkedin_data = PersonalProfileModel.model_validate(raw_data)
-    else:
-        # Already a PersonalProfileModel instance
-        linkedin_data = state["linkedin_data"]
+
+    raw_data = await get_linkedin_data(state["linkedin_id"])
+    print("raw_data", raw_data)
+    # Parse into Pydantic model so downstream nodes can use attribute access
+    linkedin_data = PersonalProfileModel.model_validate(raw_data) if raw_data else None
+    linkedin_status = "found" if linkedin_data else "not_found"
     return {
         "linkedin_data": linkedin_data,
+        "linkedin_status": linkedin_status,
     }
-
+""
+async def route_node(state: OverallState) -> Literal["about", "__end__"]:
+    """Node for routing the user to the appropriate section."""
+    linkedin_data = state["linkedin_data"]
+    if linkedin_data is None:
+        return "__end__"
+    else:
+        return "about"
 
 async def about_node(state: OverallState):
     """Extracts About section data from LinkedIn JSON."""
@@ -96,6 +102,8 @@ async def projects_node(state: OverallState):
     -------------------
     • Return VALID JSON only – no markdown, no additional keys, no prose.
     • The root object must have a single key "projects" whose value is an array of objects that conform to the schema below.
+    • If there are not values for the optional fields, do not include them in the JSON!
+    • Never use null for optional fields, use empty strings instead or dont show them at all.
     • Do not wrap the JSON in triple back-ticks.
 
     OUTPUT SCHEMA (Python `ProjectDict`)
@@ -285,10 +293,12 @@ graph_builder.add_node("projects", projects_node)
 graph_builder.add_node("experience", experience_node)
 
 graph_builder.add_edge(START, "linkedin")
-graph_builder.add_edge("linkedin", "about")
 graph_builder.add_edge("about", "projects")
 graph_builder.add_edge("projects", "experience")
 graph_builder.add_edge("experience", END)
+graph_builder.add_conditional_edges(
+    "linkedin", route_node
+)
 
 
 graph = graph_builder.compile()
