@@ -1,37 +1,38 @@
-from langchain_core.messages import HumanMessage, AIMessage, ToolMessage, AnyMessage, SystemMessage, AIMessageChunk
+from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, END, START
 from langgraph.config import get_stream_writer
-from typing import TypedDict, NotRequired, List, Optional, Dict, Any, Literal, Annotated, Union
-
-from .schemas.project_dict import ProjectDict
+from typing import TypedDict, NotRequired, Dict, Any 
 from .tools import get_linkedin_data, stream_state
 from .schemas.linkedin_profile_models import PersonalProfileModel
 from .schemas.about_dict import AboutSectionDict
-import json
-import asyncio
-import os
-import json
+from .schemas.project_dict import ProjectDict
+from .schemas.experience_dict import ExperienceCompanyDict
+from .schemas.custom_chunks import StructuredChunk, NodeUpdate
+
 import logging
 from dotenv import load_dotenv
 
 load_dotenv()
 
-
-class AgentState(TypedDict):
-    """State for the agent graph."""
+class InputState(TypedDict):
     linkedin_id: str
-    current_node: NotRequired[Literal["about", "projects", "experience","end"]]
-    linkedin_data: NotRequired[PersonalProfileModel]
+
+class OutputState(TypedDict):
     about_data:   NotRequired[Dict[str, Any]]
     experience_data: NotRequired[Dict[str, Any]]
     projects_data:  NotRequired[ProjectDict]
 
-graph_builder = StateGraph(AgentState)
+class OverallState(InputState, OutputState):
+    """State for the agent graph."""
+    linkedin_data: NotRequired[PersonalProfileModel]
+    
+
+graph_builder = StateGraph(OverallState, input_schema=InputState, output_schema=OutputState)
 
 
     
-async def linkedin_node(state: AgentState):
+async def linkedin_node(state: OverallState):
     """Node for routing the user to the appropriate section."""
     # `state` is a plain dict at runtime (TypedDict), so use dict access
     if state.get("linkedin_data") == None:
@@ -46,7 +47,7 @@ async def linkedin_node(state: AgentState):
     }
 
 
-async def about_node(state: AgentState):
+async def about_node(state: OverallState):
     """Extracts About section data from LinkedIn JSON."""
     linkedin: PersonalProfileModel = state["linkedin_data"]
 
@@ -79,13 +80,12 @@ async def about_node(state: AgentState):
     await stream_state("about_node", about_data, delay=0.003)
 
     return {
-        "current_node": "about",
         "about_data": about_data,
     }
 
-async def projects_node(state: AgentState):
+async def projects_node(state: OverallState):
     """Node for the projects section."""
-
+    writer = get_stream_writer()
     linkedin: PersonalProfileModel = state["linkedin_data"]
 
     system_content = """
@@ -173,8 +173,6 @@ async def projects_node(state: AgentState):
     }
     """
 
-
-
     message = f"""
     Generate a list of projects from the following LinkedIn profile:
     {linkedin.model_dump_json(indent=2)}
@@ -188,20 +186,95 @@ async def projects_node(state: AgentState):
     model = ChatOpenAI(model="gpt-4o-mini")
     model_with_structure = model.with_structured_output(ProjectDict)
 
-    response = await model_with_structure.ainvoke(messages)
-
+    response = {}
+    async for chunk in model_with_structure.astream(messages):
+        response = chunk
+        writer(StructuredChunk(current_node="projects_node", data=response))
+       
 
     return {
-        "current_node": "projects",
         "projects_data": response
     }
 
 
-async def experience_node(state: AgentState):
-    """Node for the experience section."""
+async def _format_date_range(date_range):
+    """Utility to convert a DateRangeModel into a readable period string.
+
+    Examples
+    --------
+    2020-01 ➜ None  -> "2020 - Present"
+    2017-05 ➜ 2022-04 -> "2017 - 2022"
+    None            -> ""
+    """
+    if date_range is None:
+        return ""
+
+    start_year = getattr(date_range.start, "year", None) if date_range.start else None
+    end_year = getattr(date_range.end, "year", None) if date_range.end else None
+
+    if start_year and end_year:
+        return f"{start_year} - {end_year}"
+    if start_year and not end_year:
+        return f"{start_year} - Present"
+    # Fallback when only end year exists or both missing
+    if end_year:
+        return str(end_year)
+    return ""
+
+
+async def experience_node(state: OverallState):
+    """Build structured experience data from LinkedIn position groups."""
+
+    linkedin: PersonalProfileModel = state["linkedin_data"]
+    company_groups: list[ExperienceCompanyDict] = []
+
+    for group in linkedin.position_groups or []:
+        # Basic company info
+        company_name = group.company.name if group.company and group.company.name else "Unknown Company"
+        logo = group.company.logo if group.company and group.company.logo else None
+
+        period_str = _format_date_range(group.date)
+
+        # Collect positions for this company
+        positions = []
+        top_location = None
+        for pos in group.profile_positions or []:
+            pos_period = _format_date_range(pos.date)
+            pos_dict = {
+                "title": pos.title or "",
+                "period": pos_period,
+            }
+            if pos.location:
+                pos_dict["location"] = pos.location
+                if top_location is None:
+                    top_location = pos.location
+            if pos.description:
+                pos_dict["description"] = pos.description
+            positions.append(pos_dict)  # type: ignore[arg-type]
+
+        if not positions:
+            # Skip groups without positions
+            continue
+
+        company_dict: ExperienceCompanyDict = {
+            "company": company_name,
+            "period": period_str,
+            "positions": positions,  # type: ignore[assignment]
+        }
+        if logo:
+            company_dict["logo"] = logo  # type: ignore[typeddict-item]
+        if top_location:
+            company_dict["location"] = top_location  # type: ignore[typeddict-item]
+
+        company_groups.append(company_dict)
+
+    experience_data = {"experience": company_groups}
+
+    # Stream chunk for real-time UI updates (small delay to throttle output)
+    await stream_state("experience_node", experience_data, delay=0.003)
+
     return {
-        "current_node": "experience",
-        "experience_data": {"experience": [{"company": "Company 1", "title": "Title 1", "description": "Description 1"}, {"company": "Company 2", "title": "Title 2", "description": "Description 2"}]}
+        "experience_data": experience_data,
     }
 
 
