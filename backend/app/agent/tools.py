@@ -89,7 +89,9 @@ async def stream_state(
     await recurse(snapshot["data"], data)
 
 
-async def get_linkedin_data(linkedin_id: str) -> PersonalProfileModel:
+from typing import Optional
+
+async def get_linkedin_data(linkedin_id: str) -> Optional[PersonalProfileModel]:
     """
     Fetch LinkedIn profile data for a given `linkedin_id` using the ProAPIS
     iScraper endpoint.
@@ -138,13 +140,29 @@ async def get_linkedin_data(linkedin_id: str) -> PersonalProfileModel:
             data = data["data"]
 
         return PersonalProfileModel.model_validate(data)
+    except aiohttp.ClientResponseError as http_exc:
+        # Specific handling for 404 – profile not found
+        if http_exc.status == 404:
+            logging.getLogger(__name__).info(
+                "LinkedIn profile '%s' not found (404).", linkedin_id
+            )
+            return None  # Allow the calling graph to handle a missing profile
+        # Other HTTP errors fall through to the generic handler below
+        logging.getLogger(__name__).warning(
+            "Failed to fetch LinkedIn data from ProAPIS (%s). Falling back to local fixture.",
+            http_exc,
+        )
     except Exception as exc:
-        # Log the error and fall back to the local fixture
+        # Any non-HTTP errors – network issues, JSON decode, etc.
         logging.getLogger(__name__).warning(
             "Failed to fetch LinkedIn data from ProAPIS (%s). Falling back to local fixture.",
             exc,
         )
-        return PersonalProfileModel.model_validate(LINKEDIN_DATA)
+        # Adding tempt fallback for development
+        if linkedin_id == "fleminks":
+            return PersonalProfileModel.model_validate(LINKEDIN_DATA)
+        else:
+            return exc
 
 
 

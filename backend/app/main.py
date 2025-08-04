@@ -31,6 +31,6 @@ async def run_portfolio(input: InputState) -> OutputState:
         else:
             logger.debug(event_type, payload)
 
-    logger.debug("RESULT:", json.dumps(to_jsonable(result), indent=2, ensure_ascii=False))
+    #logger.debug("RESULT:", json.dumps(to_jsonable(result), indent=2, ensure_ascii=False))
     return  result
 
