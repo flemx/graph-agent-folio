@@ -5,6 +5,10 @@ from typing import TypedDict, Any
 import json
 from pydantic import BaseModel
 from .agent.portfolio_graph import InputState, OutputState, graph
+from .agent.tools import to_jsonable
+import logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
@@ -21,12 +25,12 @@ async def run_portfolio(input: InputState) -> OutputState:
         event_type, payload = event
 
         if event_type == "custom":
-            print(payload)  # already JSON
+            logger.debug(payload)  # already JSON
         elif event_type == "values":
             result = payload
         else:
-            print(event_type, payload)
+            logger.debug(event_type, payload)
 
-    #print("RESULT:", json.dumps(to_jsonable(result), indent=2, ensure_ascii=False))
+    logger.debug("RESULT:", json.dumps(to_jsonable(result), indent=2, ensure_ascii=False))
     return  result
 
