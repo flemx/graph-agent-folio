@@ -5,7 +5,10 @@ from typing import Any, Mapping
 import json, asyncio
 from pydantic import BaseModel
 from langgraph.config import get_stream_writer
+from .schemas.linkedin_profile_models import PersonalProfileModel
 from .schemas.custom_chunks import StructuredChunk
+import aiohttp
+import logging
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "linkedin_data.json")
 with open(DATA_PATH, "r") as f:
@@ -86,9 +89,62 @@ async def stream_state(
     await recurse(snapshot["data"], data)
 
 
-async def get_linkedin_data(linkedin_id: str) -> dict[str, Any]:
-    """Get the linkedin data for the user."""
-    return LINKEDIN_DATA
+async def get_linkedin_data(linkedin_id: str) -> PersonalProfileModel:
+    """
+    Fetch LinkedIn profile data for a given `linkedin_id` using the ProAPIS
+    iScraper endpoint.
+
+    If the request fails for any reason, fall back to the local
+    `linkedin_data.json` fixture so the rest of the application can continue
+    to operate during development/off-line work.
+
+    Parameters
+    ----------
+    linkedin_id : str
+        The LinkedIn profile id (URN) of the target user.
+
+    Returns
+    -------
+    PersonalProfileModel
+        A pydantic model containing the profile details.
+    """
+
+    PROAPIS_KEY = os.getenv("PROAPIS_KEY")
+    if not PROAPIS_KEY:
+        raise EnvironmentError(
+            "The environment variable 'PROAPIS_KEY' must be set to call the ProAPIS endpoint."
+        )
+
+    url = "https://api.proapis.com/iscraper/v4/profile-details"
+    payload = {
+        "profile_id": linkedin_id,
+        "bypass_cache": True,
+        "related_profiles": False,
+        "network_info": False,
+        "contact_info": True,
+    }
+    headers = {
+        "Content-Type": "application/json",
+        "X-Api-Key": PROAPIS_KEY,
+    }
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, headers=headers, json=payload, timeout=30) as resp:
+                resp.raise_for_status()
+                data = await resp.json()
+        # The ProAPIS response sometimes nests the data under a "data" key, handle both cases.
+        if isinstance(data, dict) and "data" in data and isinstance(data["data"], dict):
+            data = data["data"]
+
+        return PersonalProfileModel.model_validate(data)
+    except Exception as exc:
+        # Log the error and fall back to the local fixture
+        logging.getLogger(__name__).warning(
+            "Failed to fetch LinkedIn data from ProAPIS (%s). Falling back to local fixture.",
+            exc,
+        )
+        return PersonalProfileModel.model_validate(LINKEDIN_DATA)
 
 
 
