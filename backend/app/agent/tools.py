@@ -1,9 +1,11 @@
 
 import os
 import json
-from typing import Any, TypedDict, TypeVar, AsyncIterator, Callable, Awaitable, Mapping
+from typing import Any, Mapping
 import json, asyncio
+from pydantic import BaseModel
 from langgraph.config import get_stream_writer
+from .schemas.custom_chunks import StructuredChunk
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "linkedin_data.json")
 with open(DATA_PATH, "r") as f:
@@ -28,8 +30,7 @@ async def stream_state(
     writer = get_stream_writer()
 
     # The mutable snapshot that we progressively fill.
-    snapshot: dict[str, Any] = {
-        "stream_simulator": True,
+    snapshot: StructuredChunk = {
         "current_node": node_name,
         "data": {},
     }
@@ -88,3 +89,16 @@ async def stream_state(
 async def get_linkedin_data(linkedin_id: str) -> dict[str, Any]:
     """Get the linkedin data for the user."""
     return LINKEDIN_DATA
+
+
+
+def to_jsonable(obj: Any):
+    """Recursively convert BaseModel instances to dict for JSON dumps."""
+    if isinstance(obj, BaseModel):
+        return obj.model_dump()
+    elif isinstance(obj, dict):
+        return {k: to_jsonable(v) for k, v in obj.items()}
+    elif isinstance(obj, (list, tuple, set)):
+        return [to_jsonable(v) for v in obj]
+    else:
+        return obj
