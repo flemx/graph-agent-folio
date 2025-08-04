@@ -18,30 +18,22 @@ except ImportError:  # pragma: no cover
 
 
 class ProjectDict(TypedDict):
-    """A TypedDict representing a portfolio project.
-
-    Attributes
-    ----------
-    title: str
-        Project title.
-    description: str
-        Short description of the project.
-    technologies: list[str], optional
-        A list of technologies used in the project.
-    images: list[str], optional
-        An array of image URLs (screenshots/mockups).
-    demo_video_url: str, optional
-        URL to a demo video (e.g., YouTube).
-    live_demo_url: str, optional
-        URL to a live demo site.
-    source_url: str, optional
-        URL to the source code repository.
-    """
+    """A TypedDict representing a single portfolio project."""
 
     title: str
     description: str
     technologies: NotRequired[List[str]]
     images: NotRequired[List[str]]
-    demo_video_url: NotRequired[str]
-    live_demo_url: NotRequired[str]
-    source_url: NotRequired[str]
+    demoVideoUrl: NotRequired[str]
+    liveDemoUrl: NotRequired[str]
+    sourceUrl: NotRequired[str]
+
+
+class ProjectsSectionDict(TypedDict):
+    """Container for the projects section used in the overall graph output.
+
+    Mirrors the structure returned by ``projects_node``: a single key
+    ``projects`` holding an **array** of :class:`ProjectDict` items.
+    """
+
+    projects: List[ProjectDict]

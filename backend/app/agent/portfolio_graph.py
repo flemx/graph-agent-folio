@@ -6,7 +6,7 @@ from typing import TypedDict, NotRequired, Dict, Any
 from .tools import get_linkedin_data, stream_state
 from .schemas.linkedin_profile_models import PersonalProfileModel
 from .schemas.about_dict import AboutSectionDict
-from .schemas.project_dict import ProjectDict
+from .schemas.project_dict import ProjectDict, ProjectsSectionDict
 from .schemas.experience_dict import ExperienceCompanyDict
 from .schemas.custom_chunks import StructuredChunk, NodeUpdate
 
@@ -21,7 +21,7 @@ class InputState(TypedDict):
 class OutputState(TypedDict):
     about_data:   NotRequired[Dict[str, Any]]
     experience_data: NotRequired[Dict[str, Any]]
-    projects_data:  NotRequired[ProjectDict]
+    projects_data:  NotRequired[ProjectsSectionDict]
 
 class OverallState(InputState, OutputState):
     """State for the agent graph."""
@@ -184,7 +184,7 @@ async def projects_node(state: OverallState):
         ]
     
     model = ChatOpenAI(model="gpt-4o-mini")
-    model_with_structure = model.with_structured_output(ProjectDict)
+    model_with_structure = model.with_structured_output(ProjectsSectionDict)
 
     response = {}
     async for chunk in model_with_structure.astream(messages):
@@ -197,7 +197,7 @@ async def projects_node(state: OverallState):
     }
 
 
-async def _format_date_range(date_range):
+def _format_date_range(date_range):
     """Utility to convert a DateRangeModel into a readable period string.
 
     Examples
