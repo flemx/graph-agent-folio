@@ -1,17 +1,13 @@
 from langchain_core.messages import HumanMessage, AIMessage, ToolMessage, AnyMessage, SystemMessage, AIMessageChunk
-from langgraph.graph.message import MessagesState
 from langchain_openai import ChatOpenAI
-from langchain_core.runnables.config import RunnableConfig
-from langgraph.graph import StateGraph, add_messages, END, START
-from langgraph.graph.state import CompiledStateGraph
-from langgraph.checkpoint.memory import InMemorySaver
-from langgraph.types import CachePolicy
-from pydantic import BaseModel, Field
+from langgraph.graph import StateGraph, END, START
+from langgraph.config import get_stream_writer
 from typing import TypedDict, NotRequired, List, Optional, Dict, Any, Literal, Annotated, Union
 
-from backend.app.agent.schemas.project_dict import ProjectDict
-from .tools import get_linkedin_data
+from .schemas.project_dict import ProjectDict
+from .tools import get_linkedin_data, stream_state
 from .schemas.linkedin_profile_models import PersonalProfileModel
+from .schemas.about_dict import AboutSectionDict
 import json
 import asyncio
 import os
@@ -21,13 +17,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-memory = InMemorySaver()
-
 
 class AgentState(TypedDict):
     """State for the agent graph."""
     linkedin_id: str
-    next_node: Literal["about", "projects", "experience"]
     current_node: NotRequired[Literal["about", "projects", "experience","end"]]
     linkedin_data: NotRequired[PersonalProfileModel]
     about_data:   NotRequired[Dict[str, Any]]
@@ -57,31 +50,33 @@ async def about_node(state: AgentState):
     """Extracts About section data from LinkedIn JSON."""
     linkedin: PersonalProfileModel = state["linkedin_data"]
 
+    about_data: AboutSectionDict = {}
+
     # Build profile information using dot access
-    profile = {
+
+    about_data["profile"] = {
         "avatar": linkedin.profile_picture,
         "fullName": linkedin.full_name(),
         "subTitle": linkedin.sub_title or "",
         "summary": linkedin.summary or "",
-        "country": (linkedin.location.country if linkedin.location else ""),
-        "languages": [lang.name for lang in (linkedin.languages.profile_languages if linkedin.languages and linkedin.languages.profile_languages else [])],
+        "country": linkedin.location.country if linkedin.location else "",
+        "languages": [lang.name for lang in (linkedin.languages.profile_languages if linkedin.languages and linkedin.languages.profile_languages else [])]
     }
 
     # Skills list
-    skills = linkedin.skills or []
-
+    about_data["skills"] = linkedin.skills or []
     # Contact links
     all_websites = [w.url for w in (linkedin.contact_info.websites if linkedin.contact_info and linkedin.contact_info.websites else [])]
     github_url = next((w for w in all_websites if w and "github.com" in w.lower()), None)
     websites = [w for w in all_websites if w and "github.com" not in w.lower()]
 
-    contact = {
+    about_data["contact"] = {
         "linkedin": f"https://www.linkedin.com/in/{linkedin.profile_id}",
         "github": github_url,
         "websites": websites,
     }
 
-    about_data = {"profile": profile, "skills": skills, "contact": contact}
+    await stream_state("about_node", about_data, delay=0.003)
 
     return {
         "current_node": "about",
@@ -90,6 +85,8 @@ async def about_node(state: AgentState):
 
 async def projects_node(state: AgentState):
     """Node for the projects section."""
+
+    linkedin: PersonalProfileModel = state["linkedin_data"]
 
     system_content = """
     ROLE: Portfolio Project Extractor
@@ -174,8 +171,6 @@ async def projects_node(state: AgentState):
         }
       ]
     }
-
-
     """
 
 
@@ -189,8 +184,7 @@ async def projects_node(state: AgentState):
             SystemMessage(content=system_content),
             HumanMessage(content=message)
         ]
-
-    linkedin: PersonalProfileModel = state["linkedin_data"]
+    
     model = ChatOpenAI(model="gpt-4o-mini")
     model_with_structure = model.with_structured_output(ProjectDict)
 
@@ -212,10 +206,10 @@ async def experience_node(state: AgentState):
 
 
 
-graph_builder.add_node("linkedin", linkedin_node, cache_policy=CachePolicy())
-graph_builder.add_node("about", about_node, cache_policy=CachePolicy())
-graph_builder.add_node("projects", projects_node, cache_policy=CachePolicy())
-graph_builder.add_node("experience", experience_node, cache_policy=CachePolicy())
+graph_builder.add_node("linkedin", linkedin_node)
+graph_builder.add_node("about", about_node)
+graph_builder.add_node("projects", projects_node)
+graph_builder.add_node("experience", experience_node)
 
 graph_builder.add_edge(START, "linkedin")
 graph_builder.add_edge("linkedin", "about")
@@ -225,3 +219,5 @@ graph_builder.add_edge("experience", END)
 
 
 graph = graph_builder.compile()
+
+
