@@ -56,7 +56,8 @@ async def route_node(state: OverallState) -> Literal["about", "__end__"]:
 async def about_node(state: OverallState):
     """Extracts About section data from LinkedIn JSON."""
     linkedin: PersonalProfileModel = state["linkedin_data"]
-
+    writer = get_stream_writer()
+    writer(NodeUpdate(current_node="about_node", data={"status": "started"}, chunk_type="node_update"))
     about_data: AboutSectionDict = {}
 
     # Build profile information using dot access
@@ -83,7 +84,11 @@ async def about_node(state: OverallState):
         "websites": websites,
     }
 
+   
+
     await stream_state("about_node", about_data, delay=0.003)
+
+    writer(NodeUpdate(current_node="about_node", data={"status": "completed"}, chunk_type="node_update"))
 
     return {
         "about_data": about_data,
@@ -92,6 +97,7 @@ async def about_node(state: OverallState):
 async def projects_node(state: OverallState):
     """Node for the projects section."""
     writer = get_stream_writer()
+    writer(NodeUpdate(current_node="projects_node", data={"status": "started"}, chunk_type="node_update"))
     linkedin: PersonalProfileModel = state["linkedin_data"]
 
     system_content = """
@@ -197,9 +203,9 @@ async def projects_node(state: OverallState):
     response = {}
     async for chunk in model_with_structure.astream(messages):
         response = chunk
-        writer(StructuredChunk(current_node="projects_node", data=response))
+        writer(StructuredChunk(current_node="projects_node", data=response, chunk_type="structured"))
        
-
+    writer(NodeUpdate(current_node="projects_node", data={"status": "completed"}, chunk_type="node_update"))
     return {
         "projects_data": response
     }
@@ -232,7 +238,8 @@ def _format_date_range(date_range):
 
 async def experience_node(state: OverallState):
     """Build structured experience data from LinkedIn position groups."""
-
+    writer = get_stream_writer()
+    writer(NodeUpdate(current_node="experience_node", data={"status": "started"}, chunk_type="node_update"))
     linkedin: PersonalProfileModel = state["linkedin_data"]
     company_groups: list[ExperienceCompanyDict] = []
 
@@ -280,7 +287,7 @@ async def experience_node(state: OverallState):
 
     # Stream chunk for real-time UI updates (small delay to throttle output)
     await stream_state("experience_node", experience_data, delay=0.003)
-
+    writer(NodeUpdate(current_node="experience_node", data={"status": "completed"}, chunk_type="node_update"))
     return {
         "experience_data": experience_data,
     }
