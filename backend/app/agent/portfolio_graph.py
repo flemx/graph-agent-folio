@@ -128,7 +128,11 @@ async def projects_node(state: OverallState):
     ---------------------
     1. Inspect profile["projects"] first. If it is absent, continue processing.
     2. Supplement with relevant items from profile["publications"] when they represent tangible projects.
-    3. For every candidate item:
+    3. Also read through the job history and if they mention any projects they worked on use those as well:
+        a. Don't use their job title as the project title, make up a new title for the project.
+        b. Really look at the job description and see if they mention any projects they worked on, don't just generate a bunch of projects based on small things they did.
+        c. Use a max of 3 projects from the job history, the top recent ones that have the most detail
+    4. For every candidate item:
          • Use its "title".
          • # Description rules:
            1. Synthesize "description" and bullet list from the item's description field; output only plain text (no markdown). 
