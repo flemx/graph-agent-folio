@@ -34,7 +34,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="bg-background flex">
       {/* Sidebar */}
       <Sidebar />
       
@@ -45,7 +45,7 @@ const Index = () => {
       />
 
       {/* Left Panel - Workflow Navigation (desktop only) */}
-      <div className="hidden md:block w-96 h-screen overflow-hidden md:ml-11 mt-12">
+      <div className="hidden md:block w-96 h-[calc(100vh-3rem)] overflow-hidden md:ml-11 mt-12">
         <PortfolioWorkflow 
           activeSection={activeSection}
           onSectionChange={setActiveSection}
@@ -56,7 +56,7 @@ const Index = () => {
       </div>
 
       {/* Right Panel - Content */}
-      <div className="flex-1 h-screen overflow-y-auto mt-12">
+      <div className="flex-1  overflow-y-auto mt-12">
         <div className="max-w-4xl mx-auto p-8">
           {renderContent()}
         </div>
