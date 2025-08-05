@@ -1,9 +1,11 @@
 import ProjectCard from '../ProjectCard';
 import { Project } from '@/types/project';
 import { projectsData } from '@/data/projectsData';
+import { usePortfolio } from '@/context/PortfolioContext';
 
 const ProjectsSection = () => {
-  const projects: Project[] = projectsData;
+  const { state } = usePortfolio();
+  const projects: Project[] = (state.projects_data as { projects: Project[] } | undefined)?.projects ?? projectsData;
 
   return (
     <div className="space-y-8">

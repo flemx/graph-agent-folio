@@ -1,5 +1,8 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useState } from 'react';
+import { usePortfolio } from '@/context/PortfolioContext';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 interface StartSectionProps {
@@ -7,6 +10,14 @@ interface StartSectionProps {
 }
 
 const StartSection = ({ onNavigate }: StartSectionProps) => {
+  const { startStreaming, streaming, loadingSection, finished } = usePortfolio();
+  const [linkedinId, setLinkedinId] = useState('');
+
+  const handleStart = () => {
+    if (linkedinId.trim()) {
+      startStreaming(linkedinId.trim());
+    }
+  };
   return (
     <div className="space-y-8">
       {/* Hero Section */}
@@ -33,13 +44,37 @@ const StartSection = ({ onNavigate }: StartSectionProps) => {
           <span className="text-lg font-medium">Applying for AI Engineering at LangChain</span>
           <Sparkles className="w-5 h-5" />
         </div>
-      </div>
+              {/* LinkedIn ID input */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 mt-6 max-w-md mx-auto">
+          <Input
+            placeholder="Enter LinkedIn profile ID (e.g. fleminks)"
+            value={linkedinId}
+            onChange={(e) => setLinkedinId(e.target.value)}
+            disabled={streaming}
+            className="flex-1"
+          />
+          <Button
+            onClick={handleStart}
+            disabled={streaming || !linkedinId.trim()}
+            size="lg"
+          >
+            {streaming ? 'Loading…' : 'Start'}
+            {!streaming && <ArrowRight className="w-5 h-5 ml-2" />}
+          </Button>
+        </div>
+        {loadingSection && (
+          <p className="text-sm text-muted-foreground mt-2">Processing {loadingSection}…</p>
+        )}
+        {finished && (
+          <p className="text-sm text-green-600 mt-2">Profile loaded! Use the sidebar to explore.</p>
+        )}
+        </div>
 
-      {/* Navigation Cards */}
+        {/* Navigation Cards */}
       <div className="grid gap-4 md:grid-cols-2">
         <Card 
           className="bg-gradient-secondary border-workflow-border hover:border-primary/50 transition-all duration-300 cursor-pointer group"
-          onClick={() => onNavigate('about')}
+          onClick={() => !streaming && onNavigate('about')}
         >
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
@@ -59,7 +94,7 @@ const StartSection = ({ onNavigate }: StartSectionProps) => {
 
         <Card 
           className="bg-gradient-secondary border-workflow-border hover:border-primary/50 transition-all duration-300 cursor-pointer group"
-          onClick={() => onNavigate('projects')}
+          onClick={() => !streaming && onNavigate('projects')}
         >
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
@@ -79,7 +114,7 @@ const StartSection = ({ onNavigate }: StartSectionProps) => {
 
         <Card 
           className="bg-gradient-secondary border-workflow-border hover:border-primary/50 transition-all duration-300 cursor-pointer group"
-          onClick={() => onNavigate('experience')}
+          onClick={() => !streaming && onNavigate('experience')}
         >
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
@@ -99,7 +134,7 @@ const StartSection = ({ onNavigate }: StartSectionProps) => {
 
         <Card 
           className="bg-gradient-secondary border-workflow-border hover:border-primary/50 transition-all duration-300 cursor-pointer group"
-          onClick={() => onNavigate('skills')}
+          onClick={() => !streaming && onNavigate('skills')}
         >
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
@@ -131,7 +166,7 @@ const StartSection = ({ onNavigate }: StartSectionProps) => {
             size="lg" 
             variant="secondary" 
             className="bg-white text-primary hover:bg-white/90"
-            onClick={() => onNavigate('contact')}
+            onClick={() => !streaming && onNavigate('contact')}
           >
             Get In Touch
             <ArrowRight className="w-5 h-5 ml-2" />

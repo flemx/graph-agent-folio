@@ -3,20 +3,28 @@ import { Badge } from '@/components/ui/badge';
 import { User, Sparkles, Link2, Github, Linkedin, Globe } from 'lucide-react';
 import { AboutSectionData } from '@/types/about';
 import { aboutData } from '@/data/aboutData';
+import { usePortfolio } from '@/context/PortfolioContext';
 
 interface AboutSectionProps {
   data?: AboutSectionData;
 }
 
-const AboutSection = ({ data = aboutData }: AboutSectionProps) => {
+const AboutSection = ({ data }: AboutSectionProps) => {
+  const { state } = usePortfolio();
+  const liveData = state.about_data as AboutSectionData | undefined;
+  const resolved = liveData ?? data ?? aboutData;
+  const contact = resolved.contact ?? ({} as Partial<AboutSectionData["contact"]>);
+  if (!resolved || !resolved.profile) {
+    return null; // or a skeleton component
+  }
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
         <div className="w-32 h-32 bg-gradient-primary rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden">
-          <img src={data.profile.avatar} alt={data.profile.fullName} className="object-cover w-full h-full" />
+          <img src={resolved.profile.avatar} alt={resolved.profile.fullName} className="object-cover w-full h-full" />
         </div>
-        <h1 className="text-4xl font-bold text-foreground mb-2">{data.profile.fullName}</h1>
-        <p className="text-xl text-muted-foreground">{data.profile.subTitle}</p>
+        <h1 className="text-4xl font-bold text-foreground mb-2">{resolved.profile.fullName}</h1>
+        <p className="text-xl text-muted-foreground">{resolved.profile.subTitle}</p>
       </div>
 
       <Card className="bg-gradient-secondary border-workflow-border">
@@ -28,19 +36,19 @@ const AboutSection = ({ data = aboutData }: AboutSectionProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {data.profile.summary.split('\n\n').map((paragraph, idx) => (
+          {(resolved.profile.summary ? resolved.profile.summary.split('\n\n') : []).map((paragraph, idx) => (
             <p key={idx} className="text-foreground/90 leading-relaxed">
               {paragraph}
             </p>
           ))}
           <div className="flex flex-wrap gap-2 mt-2">
-            {data.profile.languages.map((lang) => (
+            {(resolved.profile.languages ?? []).map((lang) => (
               <Badge key={lang} variant="secondary" className="text-xs">
                 {lang}
               </Badge>
             ))}
             <Badge variant="outline" className="text-xs">
-              {data.profile.country}
+              {resolved.profile.country}
             </Badge>
           </div>
         </CardContent>
@@ -58,7 +66,7 @@ const AboutSection = ({ data = aboutData }: AboutSectionProps) => {
           <ul className="space-y-2">
             <li>
               <a
-                href={data.contact.linkedin}
+                href={contact.linkedin ?? '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-primary hover:text-primary/80"
@@ -67,10 +75,10 @@ const AboutSection = ({ data = aboutData }: AboutSectionProps) => {
                 LinkedIn
               </a>
             </li>
-            {data.contact.github && (
+            {contact.github && (
               <li>
                 <a
-                  href={data.contact.github}
+                  href={resolved.contact.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-primary hover:text-primary/80"
@@ -80,7 +88,7 @@ const AboutSection = ({ data = aboutData }: AboutSectionProps) => {
                 </a>
               </li>
             )}
-            {data.contact.websites?.map((site) => (
+            {(contact.websites ?? []).map((site) => (
               <li key={site}>
                 <a
                   href={site}
@@ -107,7 +115,7 @@ const AboutSection = ({ data = aboutData }: AboutSectionProps) => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {data.skills.map((skill) => (
+            {(resolved.skills ?? []).map((skill) => (
               <Badge
                 key={skill}
                 variant="outline"

@@ -1,12 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExperienceCompany } from '@/types/experience';
 import { experiencesData } from '@/data/experiencesData';
+import { usePortfolio } from '@/context/PortfolioContext';
 
 interface ExperienceSectionProps {
   data?: ExperienceCompany[];
 }
 
-const ExperienceSection = ({ data = experiencesData }: ExperienceSectionProps) => {
+const ExperienceSection = ({ data }: ExperienceSectionProps) => {
+  const { state } = usePortfolio();
+  const liveData = (state.experience_data as { experience: ExperienceCompany[] } | undefined)?.experience;
+  const resolved = liveData ?? data ?? experiencesData;
+  const companies = resolved ?? [];
+  if (!companies.length) return null;
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
@@ -17,7 +23,7 @@ const ExperienceSection = ({ data = experiencesData }: ExperienceSectionProps) =
       </div>
 
       <div className="space-y-6">
-        {data.map((exp, idx) => (
+        {companies.map((exp, idx) => (
           <Card key={idx} className="bg-gradient-secondary ">
             <CardHeader className="border-b pb-4">
               <div className="flex justify-between items-start flex-wrap gap-2">
@@ -39,7 +45,7 @@ const ExperienceSection = ({ data = experiencesData }: ExperienceSectionProps) =
             </CardHeader>
 
             <CardContent className="space-y-6">
-              {exp.positions.map((pos, pIdx) => (
+              {(exp.positions ?? []).map((pos, pIdx) => (
                 <div key={pIdx} className="space-y-2 border-t-2  border-t border-foreground/20 pt-4 first:pt-0 first:border-none mt-4">
                   <div className="flex justify-between flex-wrap gap-2">
                     <h4 className="font-semibold  text-foreground">{pos.title}</h4>
