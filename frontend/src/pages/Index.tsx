@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { usePortfolio } from '@/context/PortfolioContext';
 import PortfolioWorkflow from '@/components/PortfolioWorkflow';
 import Sidebar from '@/components/Sidebar';
 import TopBar from '@/components/TopBar';
@@ -10,6 +11,7 @@ import SkillsSection from '@/components/sections/SkillsSection';
 import ContactSection from '@/components/sections/ContactSection';
 
 const Index = () => {
+  const { streaming, loadingSection, finished } = usePortfolio();
   const [activeSection, setActiveSection] = useState('start');
 
   const renderContent = () => {
@@ -47,6 +49,9 @@ const Index = () => {
         <PortfolioWorkflow 
           activeSection={activeSection}
           onSectionChange={setActiveSection}
+          streaming={streaming}
+          loadingSection={loadingSection}
+          finished={finished}
         />
       </div>
 
