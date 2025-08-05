@@ -6,9 +6,13 @@ import { usePortfolio } from '@/context/PortfolioContext';
 
 interface AboutSectionProps {
   data?: AboutSectionData;
+  onNavigate?: (section: string) => void;
 }
 
-const AboutSection = ({ data }: AboutSectionProps) => {
+import { Button } from '@/components/ui/button';
+import { ArrowDown } from 'lucide-react';
+
+const AboutSection = ({ data, onNavigate }: AboutSectionProps) => {
   const { state } = usePortfolio();
   const liveData = state.about_data as AboutSectionData | undefined;
   const resolved = liveData ?? data;
@@ -126,6 +130,18 @@ const AboutSection = ({ data }: AboutSectionProps) => {
           </div>
         </CardContent>
       </Card>
+
+      {onNavigate && (
+        <div className="flex justify-center mt-10">
+          <Button
+            variant="outline"
+            onClick={() => onNavigate('projects')}
+            className="flex items-center gap-2 text-primary hover:text-primary/80"
+          >
+            Next <ArrowDown className="w-5 h-5" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

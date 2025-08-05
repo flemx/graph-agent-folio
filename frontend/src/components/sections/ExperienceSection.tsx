@@ -2,11 +2,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExperienceCompany } from '@/types/experience';
 import { usePortfolio } from '@/context/PortfolioContext';
 
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
+
 interface ExperienceSectionProps {
   data?: ExperienceCompany[];
+  onNavigate?: (section: string) => void;
 }
 
-const ExperienceSection = ({ data }: ExperienceSectionProps) => {
+const ExperienceSection = ({ data, onNavigate }: ExperienceSectionProps) => {
   const { state } = usePortfolio();
   const liveData = (state.experience_data as { experience: ExperienceCompany[] } | undefined)?.experience;
   const resolved = liveData ?? data;
@@ -61,6 +65,17 @@ const ExperienceSection = ({ data }: ExperienceSectionProps) => {
           </Card>
         ))}
       </div>
+      {onNavigate && (
+        <div className="flex justify-center mt-10">
+          <Button
+            variant="outline"
+            onClick={() => onNavigate('start')}
+            className="rounded-full px-6 py-4 flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
+          >
+            End <ArrowRight className="w-5 h-5" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

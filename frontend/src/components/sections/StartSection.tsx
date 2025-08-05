@@ -148,6 +148,13 @@ const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
                 <ArrowBigLeft className="w-4 h-4 animate-bounce-horizontal" />
                 <span>Use the sidebar to explore the portfolio</span>
               </div>
+              <Button
+                onClick={() => _onNavigate('about')}
+                size="sm"
+                className="m-2"
+              >
+                Start Exploring
+              </Button>
               <Button variant="outline" onClick={handleReset} size="sm">
                 Load another profile
               </Button>

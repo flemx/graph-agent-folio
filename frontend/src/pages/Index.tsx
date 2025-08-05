@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePortfolio } from '@/context/PortfolioContext';
 import PortfolioWorkflow from '@/components/PortfolioWorkflow';
 import Sidebar from '@/components/Sidebar';
@@ -10,7 +10,7 @@ import ExperienceSection from '@/components/sections/ExperienceSection';
 
 
 const Index = () => {
-  const { streaming, loadingSection, finished } = usePortfolio();
+  const { streaming, loadingSection, finished, state } = usePortfolio();
 
   // When workflow completes, return to the start hero
   useEffect(() => {
@@ -20,16 +20,30 @@ const Index = () => {
   }, [finished]);
   const [activeSection, setActiveSection] = useState('start');
 
+    const contentRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll when streaming data appends content
+  useEffect(() => {
+    if (contentRef.current && streaming) {
+      const el = contentRef.current;
+      // If user is near the bottom (within 150px), auto-scroll to keep new content in view
+      const isNearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 150;
+      if (isNearBottom) {
+        el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+      }
+    }
+  }, [state, streaming]);
+
   const renderContent = () => {
     switch (activeSection) {
       case 'start':
         return <StartSection onNavigate={setActiveSection} />;
       case 'about':
-        return <AboutSection />;
+        return <AboutSection onNavigate={setActiveSection} />;
       case 'projects':
-        return <ProjectsSection />;
+        return <ProjectsSection onNavigate={setActiveSection} />;
       case 'experience':
-        return <ExperienceSection />;
+        return <ExperienceSection onNavigate={setActiveSection} />;
       default:
         return <StartSection onNavigate={setActiveSection} />;
     }
@@ -58,7 +72,7 @@ const Index = () => {
       </div>
 
       {/* Right Panel - Content */}
-      <div className="flex-1 h-[calc(100vh-3rem)] overflow-y-auto mt-12">
+      <div ref={contentRef} className="flex-1 h-[calc(100vh-3rem)] overflow-y-auto mt-12">
         <div className="max-w-4xl mx-auto p-8">
           {renderContent()}
         </div>

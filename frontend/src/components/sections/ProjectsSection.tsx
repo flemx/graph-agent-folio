@@ -2,7 +2,14 @@ import ProjectCard from '../ProjectCard';
 import { Project } from '@/types/project';
 import { usePortfolio } from '@/context/PortfolioContext';
 
-const ProjectsSection = () => {
+import { Button } from '@/components/ui/button';
+import { ArrowDown } from 'lucide-react';
+
+interface ProjectsSectionProps {
+  onNavigate?: (section: string) => void;
+}
+
+const ProjectsSection = ({ onNavigate }: ProjectsSectionProps) => {
   const { state } = usePortfolio();
   const projects: Project[] = (state.projects_data as { projects: Project[] } | undefined)?.projects ?? [];
 
@@ -24,6 +31,18 @@ const ProjectsSection = () => {
         <p className="text-center text-muted-foreground">
           No projects detected on this LinkedIn profile.
         </p>
+      )}
+    
+      {onNavigate && (
+        <div className="flex justify-center mt-10">
+          <Button
+            variant="outline"
+            onClick={() => onNavigate('experience')}
+            className="flex items-center gap-2 text-primary hover:text-primary/80"
+          >
+            Next <ArrowDown className="w-5 h-5" />
+          </Button>
+        </div>
       )}
     </div>
   );
