@@ -18,6 +18,7 @@ const TopBar = ({ activeSection, onSectionChange }: TopBarProps) => {
   const { theme, toggleTheme } = useTheme();
   return (
     <div className="fixed top-0 left-0 md:left-11 right-0 h-12 bg-background border-b border-border flex items-center px-4 z-20">
+    
       {/* Mobile Hamburger + Sheet */}
       <Sheet>
         <SheetTrigger asChild>
@@ -37,32 +38,36 @@ const TopBar = ({ activeSection, onSectionChange }: TopBarProps) => {
         </SheetContent>
       </Sheet>
 
+      {/* Theme toggle (mobile) */}
+      <button
+        onClick={toggleTheme}
+        className="md:hidden mr-3 rounded-md p-1 hover:bg-accent/20 focus:outline-none"
+      >
+        {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+        <span className="sr-only">Toggle theme</span>
+      </button>
+
       {/* Breadcrumb / Title */}
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <ArrowLeft className="h-4 w-4 hidden md:inline" />
+        <ArrowLeft className="h-4 w-4 hidden sm:inline" />
         <span>Agentfolio</span>
         <span className="hidden sm:inline">/</span>
         <span className="hidden sm:inline">agent</span>
         <span className="text-foreground hidden sm:inline">Portfolio</span>
-        {/* Theme toggle on mobile */}
-        <button
-          onClick={toggleTheme}
-          className="ml-auto md:hidden rounded-md p-1 hover:bg-accent/20 focus:outline-none"
-        >
-          {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          <span className="sr-only">Toggle theme</span>
-        </button>
+
       </div>
-      {/* GitHub repo link (desktop) */}
+
+      {/* GitHub repo link */}
       <a
         href="https://github.com/flemx/graph-agent-folio"
         target="_blank"
         rel="noopener noreferrer"
-        className="hidden md:inline-flex ml-auto rounded-md p-1 hover:bg-accent/20 focus:outline-none"
+        className="inline-flex ml-auto rounded-md p-1 hover:bg-accent/20 focus:outline-none"
       >
         <Github className="h-5 w-5" />
         <span className="sr-only">View source on GitHub</span>
       </a>
+      
     </div>
   );
 };
