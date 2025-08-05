@@ -22,7 +22,7 @@ const ProjectsSection = ({ onNavigate }: ProjectsSectionProps) => {
 
       {/* List projects vertically */}
       {projects.length ? (
-        <div className="grid gap-6 grid-cols-1 [@media(min-width:1156px)]:grid-cols-2">
+        <div className="grid gap-10 grid-cols-1 [@media(min-width:1156px)]:grid-cols-2">
           {projects.map((project, index) => (
             <ProjectCard key={index} project={project} />
           ))}
