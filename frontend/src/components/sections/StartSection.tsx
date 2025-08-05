@@ -77,7 +77,8 @@ const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
 
           {/* Input or loaded state */}
           {!finished ? (
-            <div className="flex flex-col sm:flex-row items-center md:items-start md:justify-start gap-4">
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row items-center md:items-start md:justify-start gap-4">
               <Input
                 placeholder="Enter LinkedIn profile ID (e.g. fleminks)"
                 value={linkedinId}
@@ -93,6 +94,12 @@ const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
                 {streaming ? 'Loading…' : 'Start'}
                 {!streaming && <ArrowRight className="w-5 h-5 ml-2" />}
               </Button>
+              </div>
+              {!streaming && (
+                <p className="text-sm text-muted-foreground max-w-md mx-auto md:mx-0">
+                  A LangGraph agent will crawl your public LinkedIn profile to generate a personalized portfolio.
+                </p>
+              )}
             </div>
           ) : (
             <div className="space-y-4 animate-fade-in-up">
