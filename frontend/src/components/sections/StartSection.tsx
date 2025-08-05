@@ -3,7 +3,10 @@ import { Input } from '@/components/ui/input';
 import { useState, useEffect } from 'react';
 import { usePortfolio } from '@/context/PortfolioContext';
 import { ArrowRight, CheckCircle, ArrowBigLeft } from 'lucide-react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { SplineScene } from '@/components/ui/splite';
+import { TextShimmer } from '@/components/ui/text-shimmer';
+
 
 
 interface StartSectionProps {
@@ -12,6 +15,21 @@ interface StartSectionProps {
 
 const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
   const { startStreaming, streaming, loadingSection, finished, state } = usePortfolio();
+
+  const MODAL_KEY = 'portfolioModalShown';
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (finished && !streaming) {
+      const alreadyShown = localStorage.getItem(MODAL_KEY);
+      if (!alreadyShown) {
+        setShowModal(true);
+        localStorage.setItem(MODAL_KEY, '1');
+        const timeout = setTimeout(() => setShowModal(false), 4000);
+        return () => clearTimeout(timeout);
+      }
+    }
+  }, [finished, streaming]);
   const [linkedinId, setLinkedinId] = useState('');
 
   // Prefill LinkedIn ID from query param or localStorage
@@ -48,11 +66,18 @@ const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
   const handleReset = () => {
     localStorage.removeItem('linkedinId');
     localStorage.removeItem('portfolioState');
+    localStorage.removeItem(MODAL_KEY);
     window.location.href = window.location.pathname;
   };
 
   return (
     <section className="py-12">
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent className="flex flex-col items-center gap-3">
+          <CheckCircle className="w-14 h-14 text-green-500 animate-bounce" />
+          <p className="text-3xl font-bold text-green-500">Portfolio Loaded!</p>
+        </DialogContent>
+      </Dialog>
       <div className="flex flex-col md:flex-row items-center gap-12 pt-12">
         {/* Left column */}
         <div className="flex-1 space-y-6 text-center md:text-left">
@@ -83,6 +108,12 @@ const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
                 placeholder="Enter LinkedIn profile ID (e.g. fleminks)"
                 value={linkedinId}
                 onChange={(e) => setLinkedinId(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleStart();
+                  }
+                }}
                 disabled={streaming}
                 className="flex-1 text-[1.1rem] md:text-[1.2rem]"
               />
@@ -95,6 +126,11 @@ const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
                 {!streaming && <ArrowRight className="w-5 h-5 ml-2" />}
               </Button>
               </div>
+              {streaming && (
+                 <TextShimmer className='font-mono text-sm' duration={1}>
+                 Generating portfolio...
+               </TextShimmer>
+              )}
               {!streaming && (
                 <p className="text-sm text-muted-foreground max-w-md mx-auto md:mx-0">
                   A LangGraph agent will crawl your public LinkedIn profile to generate a personalized portfolio.
@@ -102,9 +138,9 @@ const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
               )}
             </div>
           ) : (
-            <div className="space-y-4 animate-fade-in-up">
+            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4">
               <div className="flex items-center justify-center gap-2 text-green-500">
-                <CheckCircle className="w-6 h-6" />
+                <CheckCircle className="w-6 h-6 animate-bounce" />
                 <span className="font-semibold">Portfolio Loaded!</span>
               </div>
        
