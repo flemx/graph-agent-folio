@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowDown } from 'lucide-react';
 
 const AboutSection = ({ data, onNavigate }: AboutSectionProps) => {
-  const { state } = usePortfolio();
+  const { state, streaming } = usePortfolio();
   const liveData = state.about_data as AboutSectionData | undefined;
   const resolved = liveData ?? data;
   const contact = resolved.contact ?? ({} as Partial<AboutSectionData["contact"]>);
@@ -131,7 +131,7 @@ const AboutSection = ({ data, onNavigate }: AboutSectionProps) => {
         </CardContent>
       </Card>
 
-      {onNavigate && (
+      {onNavigate && !streaming && (
         <div className="flex justify-center mt-10">
           <Button
             variant="outline"

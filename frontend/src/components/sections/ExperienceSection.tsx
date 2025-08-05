@@ -11,7 +11,7 @@ interface ExperienceSectionProps {
 }
 
 const ExperienceSection = ({ data, onNavigate }: ExperienceSectionProps) => {
-  const { state } = usePortfolio();
+  const { state, streaming } = usePortfolio();
   const liveData = (state.experience_data as { experience: ExperienceCompany[] } | undefined)?.experience;
   const resolved = liveData ?? data;
   const companies = resolved ?? [];
@@ -65,7 +65,7 @@ const ExperienceSection = ({ data, onNavigate }: ExperienceSectionProps) => {
           </Card>
         ))}
       </div>
-      {onNavigate && (
+      {onNavigate && !streaming && (
         <div className="flex justify-center mt-10">
           <Button
             variant="outline"

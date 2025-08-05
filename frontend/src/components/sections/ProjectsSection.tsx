@@ -10,7 +10,7 @@ interface ProjectsSectionProps {
 }
 
 const ProjectsSection = ({ onNavigate }: ProjectsSectionProps) => {
-  const { state } = usePortfolio();
+  const { state, streaming } = usePortfolio();
   const projects: Project[] = (state.projects_data as { projects: Project[] } | undefined)?.projects ?? [];
 
   return (
@@ -33,7 +33,7 @@ const ProjectsSection = ({ onNavigate }: ProjectsSectionProps) => {
         </p>
       )}
     
-      {onNavigate && (
+      {onNavigate && !streaming && (
         <div className="flex justify-center mt-10">
           <Button
             variant="outline"
