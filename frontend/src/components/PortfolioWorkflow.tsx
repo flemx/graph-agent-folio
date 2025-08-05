@@ -17,6 +17,7 @@ type WorkflowData = {
   label: string;
   description?: string;
   isActive?: boolean;
+  dimmed?: boolean;
 };
 
 const nodeTypes = {
@@ -30,9 +31,12 @@ const edgeTypes = {
 interface PortfolioWorkflowProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
+  streaming?: boolean;
+  loadingSection?: string;
+  finished?: boolean;
 }
 
-const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflowProps) => {
+const PortfolioWorkflow = ({ activeSection, onSectionChange, streaming = false, loadingSection, finished = false }: PortfolioWorkflowProps) => {
   const initialNodes: Node<WorkflowData>[] = useMemo(() => [
     {
       id: 'start',
@@ -114,21 +118,27 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
 
   const isTerminal = (id: string) => id === 'start' || id === 'end';
 
+  const interactive = finished && !streaming;
+
+
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+
   const computedEdges: Edge[] = useMemo(() =>
     initialEdges.map((edge) => ({
       ...edge,
       data: {
         dimmed:
-          !isTerminal(activeSection) &&
-          !isTerminal(edge.source) &&
-          !isTerminal(edge.target) &&
-          activeSection !== edge.source &&
-          activeSection !== edge.target,
+          (!interactive) || (
+            !isTerminal(activeSection) &&
+            !isTerminal(edge.source) &&
+            !isTerminal(edge.target) &&
+            activeSection !== edge.source &&
+            activeSection !== edge.target
+          ),
       },
     })),
-  [initialEdges, activeSection]);
+  [initialEdges, activeSection, interactive]);
 
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(computedEdges);
 
   // Update edges dimming when activeSection changes
@@ -142,20 +152,28 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange }: PortfolioWorkflow
           ...node.data,
           isActive: !isTerminal(activeSection) && node.id === activeSection,
           dimmed:
-            !isTerminal(activeSection) && node.id !== activeSection,
+            (!interactive) || (!isTerminal(activeSection) && node.id !== activeSection),
         },
       }))
     );
-  }, [computedEdges, setEdges]);
+  }, [computedEdges, setEdges, setNodes, activeSection, interactive]);
+
+  // Auto navigate when backend signals a new section is processing
+  useEffect(() => {
+    if (streaming && loadingSection) {
+      onSectionChange(loadingSection);
+    }
+  }, [streaming, loadingSection, onSectionChange]);
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
 
-  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
+  const onNodeClick = useCallback((_: React.MouseEvent, node: Node<WorkflowData>) => {
+    if (!interactive) return;
     onSectionChange(node.id);
-  }, [onSectionChange]);
+  }, [onSectionChange, interactive]);
 
   return (
     <div className="h-full bg-workflow-bg border-r border-workflow-border overflow-hidden">

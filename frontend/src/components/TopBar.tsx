@@ -5,6 +5,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import PortfolioWorkflow from '@/components/PortfolioWorkflow';
+import { usePortfolio } from '@/context/PortfolioContext';
 import { useTheme } from '@/hooks/useTheme';
 
 interface TopBarProps {
@@ -13,6 +14,7 @@ interface TopBarProps {
 }
 
 const TopBar = ({ activeSection, onSectionChange }: TopBarProps) => {
+  const { streaming, loadingSection, finished } = usePortfolio();
   const { theme, toggleTheme } = useTheme();
   return (
     <div className="fixed top-0 left-0 md:left-11 right-0 h-12 bg-background border-b border-border flex items-center px-4 z-20">
@@ -28,6 +30,9 @@ const TopBar = ({ activeSection, onSectionChange }: TopBarProps) => {
           <PortfolioWorkflow
             activeSection={activeSection}
             onSectionChange={onSectionChange}
+            streaming={streaming}
+            loadingSection={loadingSection}
+            finished={finished}
           />
         </SheetContent>
       </Sheet>
