@@ -147,6 +147,13 @@ export function usePortfolioStream(): UsePortfolioStreamReturn {
             }
             break;
           }
+          case 'error': {
+            console.error('Backend error', parsed.data ?? parsed);
+            setStreaming(false);
+            setLoadingSection(undefined);
+            setFinished(true);
+            break;
+          }
           case 'values': {
             setState(parsed.data ?? parsed);
             // Do NOT mark finished here; the backend may emit intermediate values.
