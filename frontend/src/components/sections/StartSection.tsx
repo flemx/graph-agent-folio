@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePortfolio } from '@/context/PortfolioContext';
 import { ArrowRight } from 'lucide-react';
 import { SplineScene } from '@/components/ui/splite';
@@ -13,6 +13,15 @@ const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
   const { startStreaming, streaming, loadingSection, finished } = usePortfolio();
   const [linkedinId, setLinkedinId] = useState('');
 
+  // Prefill LinkedIn ID from ?id= or ?linkedin= query parameter
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const prefill = params.get('id') || params.get('linkedin');
+    if (prefill) {
+      setLinkedinId(prefill);
+    }
+  }, []);
+
   const handleStart = () => {
     if (linkedinId.trim()) {
       startStreaming(linkedinId.trim());
@@ -21,7 +30,7 @@ const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
 
   return (
     <section className="py-12">
-      <div className="flex flex-col md:flex-row items-center gap-12">
+      <div className="flex flex-col md:flex-row items-center gap-12 pt-12">
         {/* Left column */}
         <div className="flex-1 space-y-6 text-center md:text-left">
           <div className="relative inline-block">
@@ -41,7 +50,7 @@ const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
               value={linkedinId}
               onChange={(e) => setLinkedinId(e.target.value)}
               disabled={streaming}
-              className="flex-1"
+              className="flex-1 text-[1.1rem] md:text-[1.2rem]"
             />
             <Button
               onClick={handleStart}
