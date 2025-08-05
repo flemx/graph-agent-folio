@@ -63,7 +63,7 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange, streaming = false, 
       type: 'workflow',
       position: { x: 250, y: 250 },
       data: {
-        label: 'AI Projects',
+        label: 'Projects',
         description: 'Agent Systems',
         isActive: activeSection === 'projects'
       }

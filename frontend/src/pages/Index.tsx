@@ -7,8 +7,7 @@ import StartSection from '@/components/sections/StartSection';
 import AboutSection from '@/components/sections/AboutSection';
 import ProjectsSection from '@/components/sections/ProjectsSection';
 import ExperienceSection from '@/components/sections/ExperienceSection';
-import SkillsSection from '@/components/sections/SkillsSection';
-import ContactSection from '@/components/sections/ContactSection';
+
 
 const Index = () => {
   const { streaming, loadingSection, finished } = usePortfolio();
@@ -31,10 +30,6 @@ const Index = () => {
         return <ProjectsSection />;
       case 'experience':
         return <ExperienceSection />;
-      case 'skills':
-        return <SkillsSection />;
-      case 'contact':
-        return <ContactSection />;
       default:
         return <StartSection onNavigate={setActiveSection} />;
     }
