@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExperienceCompany } from '@/types/experience';
-import { experiencesData } from '@/data/experiencesData';
 import { usePortfolio } from '@/context/PortfolioContext';
 
 interface ExperienceSectionProps {
@@ -10,7 +9,7 @@ interface ExperienceSectionProps {
 const ExperienceSection = ({ data }: ExperienceSectionProps) => {
   const { state } = usePortfolio();
   const liveData = (state.experience_data as { experience: ExperienceCompany[] } | undefined)?.experience;
-  const resolved = liveData ?? data ?? experiencesData;
+  const resolved = liveData ?? data;
   const companies = resolved ?? [];
   if (!companies.length) return null;
   return (
