@@ -21,7 +21,24 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   // For the modal carousel
-  const [modalEmblaRef] = useEmblaCarousel({ loop: false });
+  const [modalEmblaRef, modalEmblaApi] = useEmblaCarousel({ loop: false });
+  const [modalSelectedIndex, setModalSelectedIndex] = useState(0);
+
+  // Update the active dot index when the modal carousel changes
+  useEffect(() => {
+    if (!modalEmblaApi) return;
+
+    const onSelect = () => {
+      setModalSelectedIndex(modalEmblaApi.selectedScrollSnap());
+    };
+
+    modalEmblaApi.on('select', onSelect);
+    onSelect(); // init
+
+    return () => {
+      modalEmblaApi.off('select', onSelect);
+    };
+  }, [modalEmblaApi]);
 
   // Update the active dot index when the carousel changes
   useEffect(() => {
@@ -117,7 +134,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
           <CardTitle className="text-xl font-semibold text-foreground">
             {project.title}
           </CardTitle>
-          <CardDescription className="text-muted-foreground">
+          <CardDescription className="text-muted-foreground whitespace-pre-line">
             {project.description}
           </CardDescription>
         </CardHeader>
@@ -181,18 +198,55 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       </Card>
 
       {/* Modal with enlarged carousel */}
-      <DialogContent className="max-w-3xl">
-        <div className="overflow-hidden rounded-lg" ref={modalEmblaRef}>
-          <div className="flex">
-            {project.images?.map((url, idx) => (
-              <img
-                key={idx}
-                src={url}
-                alt={`${project.title}-${idx}`}
-                className="max-h-[80vh] object-contain min-w-full"
-              />
-            ))}
+      <DialogContent className="w-full max-w-[90vw] p-0">
+        <div className="relative">
+          <div className="overflow-hidden" ref={modalEmblaRef}>
+            <div className="flex">
+              {project.images?.map((url, idx) => (
+                <img
+                  key={idx}
+                  src={url}
+                  alt={`${project.title}-${idx}`}
+                  className="object-scale-down max-h-[90vh] min-w-full"
+                />
+              ))}
+            </div>
           </div>
+
+          {/* Navigation arrows */}
+          {project.images && project.images.length > 1 && (
+            <>
+              <button
+                onClick={() => modalEmblaApi && modalEmblaApi.scrollPrev()}
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/70 hover:bg-background text-foreground rounded-full p-2 shadow"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={() => modalEmblaApi && modalEmblaApi.scrollNext()}
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/70 hover:bg-background text-foreground rounded-full p-2 shadow"
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </>
+          )}
+
+          {/* Dot indicators */}
+          {project.images && project.images.length > 1 && (
+            <div className="flex justify-center gap-2 pt-4">
+              {project.images.map((_, idx) => (
+                <div
+                  key={idx}
+                  className={cn(
+                    'w-3 h-3 rounded-full',
+                    idx === modalSelectedIndex ? 'bg-foreground' : 'bg-muted-foreground/40'
+                  )}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>
