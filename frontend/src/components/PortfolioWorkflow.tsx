@@ -128,16 +128,24 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange, streaming = false, 
       ...edge,
       data: {
         dimmed:
-          (!interactive) || (
-            !isTerminal(activeSection) &&
-            !isTerminal(edge.source) &&
-            !isTerminal(edge.target) &&
-            activeSection !== edge.source &&
-            activeSection !== edge.target
+          (
+            // While streaming, only keep edges connected to the currently active node highlighted
+            streaming
+              ? activeSection !== edge.source && activeSection !== edge.target
+              : (
+                  // Previous logic when workflow is finished (interactive) or before start
+                  (!interactive) || (
+                    !isTerminal(activeSection) &&
+                    !isTerminal(edge.source) &&
+                    !isTerminal(edge.target) &&
+                    activeSection !== edge.source &&
+                    activeSection !== edge.target
+                  )
+            )
           ),
       },
     })),
-  [initialEdges, activeSection, interactive]);
+  [initialEdges, activeSection, interactive, streaming]);
 
   const [edges, setEdges, onEdgesChange] = useEdgesState(computedEdges);
 
@@ -152,7 +160,12 @@ const PortfolioWorkflow = ({ activeSection, onSectionChange, streaming = false, 
           ...node.data,
           isActive: !isTerminal(activeSection) && node.id === activeSection,
           dimmed:
-            (!interactive) || (!isTerminal(activeSection) && node.id !== activeSection),
+            (
+              // While streaming (not interactive), dim everything **except** the currently active node
+              (!interactive && node.id !== activeSection) ||
+              // After workflow is finished (interactive), dim non-active, non-terminal nodes as before
+              (interactive && !isTerminal(activeSection) && node.id !== activeSection)
+            ),
         },
       }))
     );
