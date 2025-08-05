@@ -6,6 +6,7 @@ interface PortfolioContextValue {
   loadingSection?: SectionKey;
   streaming: boolean;
   finished: boolean;
+  error?: string | null;
   startStreaming: (linkedinId: string) => Promise<void>;
   abort: () => void;
 }

@@ -14,13 +14,13 @@ interface StartSectionProps {
 }
 
 const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
-  const { startStreaming, streaming, loadingSection, finished, state } = usePortfolio();
+  const { startStreaming, streaming, loadingSection, finished, state, error } = usePortfolio();
 
   const MODAL_KEY = 'portfolioModalShown';
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    if (finished && !streaming) {
+    if (finished && !streaming && !error) {
       const alreadyShown = localStorage.getItem(MODAL_KEY);
       if (!alreadyShown) {
         setShowModal(true);
@@ -29,7 +29,7 @@ const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
         return () => clearTimeout(timeout);
       }
     }
-  }, [finished, streaming]);
+  }, [finished, streaming, error]);
   const [linkedinId, setLinkedinId] = useState('');
 
   // Prefill LinkedIn ID from query param or localStorage
@@ -101,7 +101,7 @@ const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
           </div>
 
           {/* Input or loaded state */}
-          {!finished ? (
+          {!finished || error ? (
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row items-center md:items-start md:justify-start gap-4">
               <Input
@@ -131,7 +131,12 @@ const StartSection = ({ onNavigate: _onNavigate }: StartSectionProps) => {
                  Generating portfolio...
                </TextShimmer>
               )}
-              {!streaming && (
+              {error && (
+                <p className="text-sm text-red-500 max-w-md mx-auto md:mx-0">
+                  {error}
+                </p>
+              )}
+              {!streaming && !error && (
                 <p className="text-sm text-muted-foreground max-w-md mx-auto md:mx-0">
                   A LangGraph agent will crawl your public LinkedIn profile to generate a personalized portfolio.
                 </p>

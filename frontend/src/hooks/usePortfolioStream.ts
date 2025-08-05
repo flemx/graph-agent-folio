@@ -22,6 +22,8 @@ interface UsePortfolioStreamReturn {
   streaming: boolean;
   /* True after `values` event arrived */
   finished: boolean;
+  /* Error message if something went wrong */
+  error?: string | null;
   /* Kick-off SSE */
   startStreaming: (linkedinId: string) => Promise<void>;
   /* Abort current stream */
@@ -67,6 +69,7 @@ export function usePortfolioStream(): UsePortfolioStreamReturn {
   const [loadingSection, setLoadingSection] = useState<SectionKey | undefined>();
   const [streaming, setStreaming] = useState(false);
   const [finished, setFinished] = useState(() => !!localStorage.getItem(STORAGE_KEY));
+  const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
   const abort = useCallback(() => {
@@ -74,6 +77,7 @@ export function usePortfolioStream(): UsePortfolioStreamReturn {
     abortRef.current = null;
     setStreaming(false);
     setLoadingSection(undefined);
+    setError(null);
   }, []);
 
   const startStreaming = useCallback(async (linkedinId: string) => {
@@ -87,6 +91,7 @@ export function usePortfolioStream(): UsePortfolioStreamReturn {
     abortRef.current = controller;
     setStreaming(true);
     setFinished(false);
+    setError(null);
     setState({ linkedin_id: linkedinId });
 
     const resp = await fetch('/api/portfolio/stream', {
@@ -148,7 +153,9 @@ export function usePortfolioStream(): UsePortfolioStreamReturn {
             break;
           }
           case 'error': {
-            console.error('Backend error', parsed.data ?? parsed);
+            const message = (typeof parsed.data === 'string' ? parsed.data : JSON.stringify(parsed.data)) ?? 'Unknown error';
+            console.error('Backend error', message);
+            setError(message);
             setStreaming(false);
             setLoadingSection(undefined);
             setFinished(true);
@@ -156,6 +163,11 @@ export function usePortfolioStream(): UsePortfolioStreamReturn {
           }
           case 'values': {
             setState(parsed.data ?? parsed);
+            // Check for LinkedIn not found status
+            const status = (parsed.data ?? parsed).linkedin_status;
+            if (status === 'not_found') {
+              setError('LinkedIn profile not found');
+            }
             // Do NOT mark finished here; the backend may emit intermediate values.
             break;
           }
@@ -194,6 +206,7 @@ export function usePortfolioStream(): UsePortfolioStreamReturn {
     loadingSection,
     streaming,
     finished,
+    error,
     startStreaming,
     abort,
   };
