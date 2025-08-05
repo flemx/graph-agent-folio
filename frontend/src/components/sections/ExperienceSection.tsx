@@ -46,7 +46,7 @@ const ExperienceSection = ({ data }: ExperienceSectionProps) => {
 
             <CardContent className="space-y-6">
               {(exp.positions ?? []).map((pos, pIdx) => (
-                <div key={pIdx} className="space-y-2 border-t-2  border-t border-foreground/20 pt-4 first:pt-0 first:border-none mt-4">
+                <div key={pIdx} className="space-y-2 border-t border-foreground/20 pt-4 first:pt-0 first:border-none mt-4">
                   <div className="flex justify-between flex-wrap gap-2">
                     <h4 className="font-semibold  text-foreground">{pos.title}</h4>
                     <span className="text-sm text-muted-foreground">{pos.period}</span>

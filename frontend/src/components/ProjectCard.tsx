@@ -83,7 +83,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         {/* Action Buttons */}
         <div className="flex gap-2 pt-2 flex-wrap">
           {project.demoVideoUrl && (
-            <Button size="sm" variant="outline" className="border-accent/30 hover:bg-accent/10">
+            <Button size="sm" variant="outline" className="border-accent/30 text-foreground hover:bg-accent/10">
               <Video className="w-4 h-4 mr-2" />
               Demo Video
             </Button>
@@ -95,7 +95,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
             </Button>
           )}
           {project.sourceUrl && (
-            <Button size="sm" variant="outline" className="border-primary/30 hover:bg-primary/10">
+            <Button size="sm" variant="outline" className="border-primary/30 text-foreground hover:bg-primary/10">
               <Github className="w-4 h-4 mr-2" />
               Source
             </Button>

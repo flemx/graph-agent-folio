@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePortfolio } from '@/context/PortfolioContext';
 import PortfolioWorkflow from '@/components/PortfolioWorkflow';
 import Sidebar from '@/components/Sidebar';
@@ -12,6 +12,13 @@ import ContactSection from '@/components/sections/ContactSection';
 
 const Index = () => {
   const { streaming, loadingSection, finished } = usePortfolio();
+
+  // When workflow completes, return to the start hero
+  useEffect(() => {
+    if (finished) {
+      setActiveSection('start');
+    }
+  }, [finished]);
   const [activeSection, setActiveSection] = useState('start');
 
   const renderContent = () => {

@@ -1,4 +1,4 @@
-import { ArrowLeft, Menu, Moon, Sun } from 'lucide-react';
+import { ArrowLeft, Menu, Moon, Sun, Github } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -40,10 +40,10 @@ const TopBar = ({ activeSection, onSectionChange }: TopBarProps) => {
       {/* Breadcrumb / Title */}
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <ArrowLeft className="h-4 w-4 hidden md:inline" />
-        <span>LangGraph Studio</span>
+        <span>Agentfolio</span>
         <span className="hidden sm:inline">/</span>
         <span className="hidden sm:inline">agent</span>
-        <span className="text-foreground hidden sm:inline">Graph</span>
+        <span className="text-foreground hidden sm:inline">Portfolio</span>
         {/* Theme toggle on mobile */}
         <button
           onClick={toggleTheme}
@@ -53,14 +53,16 @@ const TopBar = ({ activeSection, onSectionChange }: TopBarProps) => {
           <span className="sr-only">Toggle theme</span>
         </button>
       </div>
-      {/* Theme toggle (desktop) */}
-      <button
-        onClick={toggleTheme}
+      {/* GitHub repo link (desktop) */}
+      <a
+        href="https://github.com/flemx/graph-agent-folio"
+        target="_blank"
+        rel="noopener noreferrer"
         className="hidden md:inline-flex ml-auto rounded-md p-1 hover:bg-accent/20 focus:outline-none"
       >
-        {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-        <span className="sr-only">Toggle theme</span>
-      </button>
+        <Github className="h-5 w-5" />
+        <span className="sr-only">View source on GitHub</span>
+      </a>
     </div>
   );
 };
