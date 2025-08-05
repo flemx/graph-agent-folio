@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 
 /**
  * Shape of the final payload returned by the backend (values event).
@@ -55,10 +55,18 @@ function createSSEParser(onEvent: (ev: { event?: string; data: string }) => void
 }
 
 export function usePortfolioStream(): UsePortfolioStreamReturn {
-  const [state, setState] = useState<PortfolioState>({});
+  const STORAGE_KEY = 'portfolioState';
+  const [state, setState] = useState<PortfolioState>(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      return stored ? (JSON.parse(stored) as PortfolioState) : {};
+    } catch {
+      return {};
+    }
+  });
   const [loadingSection, setLoadingSection] = useState<SectionKey | undefined>();
   const [streaming, setStreaming] = useState(false);
-  const [finished, setFinished] = useState(false);
+  const [finished, setFinished] = useState(() => !!localStorage.getItem(STORAGE_KEY));
   const abortRef = useRef<AbortController | null>(null);
 
   const abort = useCallback(() => {
@@ -71,6 +79,9 @@ export function usePortfolioStream(): UsePortfolioStreamReturn {
   const startStreaming = useCallback(async (linkedinId: string) => {
     // Abort any existing stream first
     abort();
+
+    // Clear previous cached state
+    localStorage.removeItem(STORAGE_KEY);
 
     const controller = new AbortController();
     abortRef.current = controller;
@@ -159,6 +170,17 @@ export function usePortfolioStream(): UsePortfolioStreamReturn {
     setFinished(true);
     setLoadingSection(undefined);
   }, [abort]);
+
+  // Persist final state to localStorage when streaming finishes
+  useEffect(() => {
+    if (finished) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch {
+        // ignoring quota or serialization errors
+      }
+    }
+  }, [finished, state]);
 
   return {
     state,
