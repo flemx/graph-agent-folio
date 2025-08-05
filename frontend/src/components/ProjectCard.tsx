@@ -83,21 +83,37 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         {/* Action Buttons */}
         <div className="flex gap-2 pt-2 flex-wrap">
           {project.demoVideoUrl && (
-            <Button size="sm" variant="outline" className="border-accent/30 text-foreground hover:bg-accent/10">
-              <Video className="w-4 h-4 mr-2" />
-              Demo Video
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-accent/30 text-foreground hover:bg-accent/10"
+              asChild
+            >
+              <a href={project.demoVideoUrl} target="_blank" rel="noopener noreferrer">
+                <Video className="w-4 h-4 mr-2" />
+                Demo Video
+              </a>
             </Button>
           )}
           {project.liveDemoUrl && (
-            <Button size="sm" className="bg-gradient-primary hover:opacity-90">
-              <Play className="w-4 h-4 mr-2" />
-              Live Demo
+            <Button size="sm" className="bg-gradient-primary hover:opacity-90" asChild>
+              <a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer">
+                <Play className="w-4 h-4 mr-2" />
+                Live Demo
+              </a>
             </Button>
           )}
           {project.sourceUrl && (
-            <Button size="sm" variant="outline" className="border-primary/30 text-foreground hover:bg-primary/10">
-              <Github className="w-4 h-4 mr-2" />
-              Source
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-primary/30 text-foreground hover:bg-primary/10"
+              asChild
+            >
+              <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer">
+                <Github className="w-4 h-4 mr-2" />
+                Source
+              </a>
             </Button>
           )}
         </div>
