@@ -34,6 +34,7 @@ async def stream_state(
 
     # The mutable snapshot that we progressively fill.
     snapshot: StructuredChunk = {
+        "chunk_type": "structured",
         "current_node": node_name,
         "data": {},
     }
