@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { User, Sparkles, Link2, Github, Linkedin, Globe } from 'lucide-react';
 import { AboutSectionData } from '@/types/about';
-import { aboutData } from '@/data/aboutData';
 import { usePortfolio } from '@/context/PortfolioContext';
 
 interface AboutSectionProps {
@@ -12,7 +11,7 @@ interface AboutSectionProps {
 const AboutSection = ({ data }: AboutSectionProps) => {
   const { state } = usePortfolio();
   const liveData = state.about_data as AboutSectionData | undefined;
-  const resolved = liveData ?? data ?? aboutData;
+  const resolved = liveData ?? data;
   const contact = resolved.contact ?? ({} as Partial<AboutSectionData["contact"]>);
   if (!resolved || !resolved.profile) {
     return null; // or a skeleton component
