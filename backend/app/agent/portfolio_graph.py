@@ -130,7 +130,12 @@ async def projects_node(state: OverallState):
     2. Supplement with relevant items from profile["publications"] when they represent tangible projects.
     3. For every candidate item:
          • Use its "title".
-         • Synthesize "description" from the item's description field; strip markdown; stay under 120 words; start with an active verb.
+         • # Description rules:
+           1. Synthesize "description" and bullet list from the item's description field; output only plain text (no markdown). 
+           2. Begin with a brief overview consice short description followed by bullet points using the "• " prefix 
+           3. Use next line seperators: \n\n after the overview and in between bullet points also use \n
+           4. max 3 bullet points, or less if the content is very short.
+           5. keep total length ≤70 words.
          • Extract URLs from links provided in the description:
              – Image extensions ⇒ images[]
              – GitHub / GitLab ⇒ sourceUrl
@@ -177,7 +182,7 @@ async def projects_node(state: OverallState):
       "projects": [
         {
           "title": "Agentforce Creator MCP",
-          "description": "Intelligent server that auto-generates and deploys Agentforce agents on Salesforce.",
+          "description": "An intelligent MCP server that automatically generates and deploys Agentforce agents on Salesforce.\n\n  • Analyzes support cases for automation opportunities\n• Generates actionable recommendation reports\n• Builds and deploys custom agents automatically",
           "technologies": ["python", "salesforce", "langchain"],
           "images": ["https://.../agentforce_creator_mcp.jpg"],
           "demoVideoUrl": "https://.../AgentForce_Demo.mp4",
@@ -286,7 +291,7 @@ async def experience_node(state: OverallState):
     experience_data = {"experience": company_groups}
 
     # Stream chunk for real-time UI updates (small delay to throttle output)
-    await stream_state("experience_node", experience_data, delay=0.003)
+    await stream_state("experience_node", experience_data, delay=0.001)
     writer(NodeUpdate(current_node="experience_node", data={"status": "completed"}, chunk_type="node_update"))
     return {
         "experience_data": experience_data,
