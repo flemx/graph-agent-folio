@@ -50,6 +50,14 @@ flowchart LR
 
 ---
 
+## 🌐 Live Demo
+
+Check out the live demo of Graph-Agent-Folio [here](https://graph-agent-folio.fly.dev/).
+
+You can also share the page with your LinkedIn handle prefilled by using the query parameter `id={linkedin_id}`. For example: [https://graph-agent-folio.fly.dev/?id=fleminks](https://graph-agent-folio.fly.dev/?id=fleminks)
+
+---
+
 ## ⚡ Quick start
 
 ### 1 – Production in one command
